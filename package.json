@@ -1,0 +1,21 @@
+{
+  "name": "dindayal-jute-craft-store",
+  "version": "1.0.0",
+  "description": "Eco-friendly E-Commerce Website & Admin Portal for Jute Bags, Mats, Ropes & Home Decor - Dindayal Ropes & Indian Jute House",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx -y serve . -l 3000",
+    "dev": "npx -y serve . -l 3000"
+  },
+  "keywords": [
+    "jute",
+    "e-commerce",
+    "dindayal-ropes",
+    "indian-jute-house",
+    "bags",
+    "mats",
+    "ropes"
+  ],
+  "author": "Dindayal Ropes (India) & Indian Jute House",
+  "license": "ISC"
+}

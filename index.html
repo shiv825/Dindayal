@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dindayal Jute & Craft | Handcrafted Jute Bags, Braided Rugs & Eco Decor</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Shop 100% natural, biodegradable golden jute bags, handcrafted braided floor rugs, dining table placemats, planters, and home decor from Dindayal Jute & Indian Jute House. Direct from Kolkata craft clusters with pan-India delivery.">
+  <meta name="keywords" content="jute bags, jute mats, jute rugs, dining table mats, jute planters, indian jute house, dindayal jute, eco friendly bags, kolkata jute craft">
+  <meta name="author" content="Dindayal Jute & Craft & Indian Jute House">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Dindayal Jute & Craft | Handcrafted Eco Living">
+  <meta property="og:description" content="Discover premium handcrafted jute bags, braided mandala rugs, dining placemats, and woven planters. Direct from Bengal craft clusters.">
+  <meta property="og:image" content="assets/images/jute_tote_bag.jpg">
+
+  <!-- Premium Typography: Plus Jakarta Sans (Modern UI) + Outfit (Headings) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 1. Top Announcement Bar -->
+  <aside class="announcement-bar" aria-label="Announcement">
+    <div class="container announcement-inner">
+      <div class="announcement-left" id="topAnnouncementText">
+        <span class="badge-pill">🌿 Eco Offer</span>
+        <span>Free Pan-India Delivery on orders over ₹999. Use coupon <strong class="coupon-tag">ECO10</strong> for 10% OFF!</span>
+      </div>
+      <div class="announcement-right">
+        <a href="tel:+919836677089" id="topPhoneLink" class="announcement-link">📞 +91 98366 77089</a>
+        <span class="sep">•</span>
+        <a href="mailto:sales@dindayalropes.com" id="topEmailLink" class="announcement-link">✉️ sales@dindayalropes.com</a>
+        <span class="sep">•</span>
+        <span class="gst-badge" id="headerGst">GST: 19AACFD2094B1ZS</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 2. Sticky Modern Floating Header -->
+  <header class="main-header" id="siteHeader">
+    <div class="container header-container">
+      <!-- Brand Logo -->
+      <a class="brand-box" onclick="resetFilters(); window.scrollTo({top: 0, behavior: 'smooth'});" title="Dindayal Jute & Craft">
+        <div class="brand-logo-icon">
+          <span>🌱</span>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name" id="brandStoreName">Dindayal Jute & Craft</span>
+          <span class="brand-subtitle" id="brandSubtitle">Indian Jute House Enterprise • Bengal Heritage</span>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="header-search-bar">
+        <div class="search-input-wrapper">
+          <span class="search-icon-symbol">🔍</span>
+          <input type="search" id="mainSearchInput" class="search-field" placeholder="Search jute bags, braided rugs, dining placemats, planters..." aria-label="Search products">
+          <kbd class="search-kbd-hint">Ctrl + K</kbd>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="header-nav-actions">
+        <button class="nav-action-btn b2b-btn" onclick="openB2BModal()" title="Wholesale & Custom Logo Printing">
+          <span class="btn-sparkle">✨</span>
+          <span>Wholesale B2B</span>
+        </button>
+
+        <button class="nav-action-btn cart-btn" onclick="openCartDrawer()" title="View your shopping bag">
+          <span class="cart-svg-wrap">🛒</span>
+          <span class="cart-label">Bag</span>
+          <span class="cart-badge-bubble" id="headerCartBadge" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Bar -->
+    <nav class="category-strip" aria-label="Product Categories">
+      <div class="container category-strip-inner">
+        <ul class="category-nav-pills">
+          <li><button class="cat-pill active" data-category="all">✨ All Jute Products</button></li>
+          <li><button class="cat-pill" data-category="bags">👜 Jute Bags & Totes</button></li>
+          <li><button class="cat-pill" data-category="mats">🧶 Braided Mats & Rugs</button></li>
+          <li><button class="cat-pill" data-category="home">🪴 Planters & Home Decor</button></li>
+        </ul>
+        <div class="strip-eco-label">
+          <span>100% Biodegradable & Compostable</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 2.5. Craft Stories Circular Bar (Instagram-Style Visual Highlights) -->
+  <aside class="craft-stories-strip" aria-label="Visual Craft Highlights">
+    <div class="container craft-stories-container">
+      <button class="story-bubble-item story-video-pulse" onclick="openVideoDocModal()" title="Watch artisan mat weaving video">
+        <div class="bubble-ring"><div class="bubble-avatar">🎬</div></div>
+        <span class="bubble-title">Loom Video</span>
+      </button>
+      <button class="story-bubble-item" onclick="setCategoryFilter('mats')" title="View floor rugs">
+        <div class="bubble-ring"><div class="bubble-avatar">🧶</div></div>
+        <span class="bubble-title">Mandala Rugs</span>
+      </button>
+      <button class="story-bubble-item" onclick="setCategoryFilter('mats')" title="View handcrafted door mats">
+        <div class="bubble-ring"><div class="bubble-avatar">🚪</div></div>
+        <span class="bubble-title">Door Mats</span>
+      </button>
+      <button class="story-bubble-item" onclick="setCategoryFilter('mats')" title="View dining placemats">
+        <div class="bubble-ring"><div class="bubble-avatar">🍽️</div></div>
+        <span class="bubble-title">Dining Mats</span>
+      </button>
+      <button class="story-bubble-item" onclick="setCategoryFilter('bags')" title="View shopping totes">
+        <div class="bubble-ring"><div class="bubble-avatar">👜</div></div>
+        <span class="bubble-title">Jute Totes</span>
+      </button>
+      <button class="story-bubble-item" onclick="setCategoryFilter('home')" title="View plant pot covers">
+        <div class="bubble-ring"><div class="bubble-avatar">🪴</div></div>
+        <span class="bubble-title">Planters</span>
+      </button>
+      <button class="story-bubble-item" onclick="scrollToCalculator()" title="Direct mill wholesale pricing">
+        <div class="bubble-ring bubble-gold"><div class="bubble-avatar">🏭</div></div>
+        <span class="bubble-title">Mill Calculator</span>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <!-- 3. Animated Hero Stage Section (Dynamic Layout with Hanging Ropes & 3D Interactive Stage) -->
+    <section class="hero-stage-section" id="heroStageSection" aria-labelledby="heroHeading">
+      <div class="hero-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+      </div>
+
+      <!-- Dangling Braided Jute Ropes with Realistic Swinging Motion & Interactive Kraft Tags -->
+      <div class="hanging-ropes-stage" aria-hidden="true">
+        <!-- Left Rope: Handcrafted Artisan Mats Heritage Tag (No coupon) -->
+        <div class="hanging-rope-unit rope-left" id="ropeMatCraftUnit">
+          <div class="braided-cord"></div>
+          <div class="rope-brass-knot"></div>
+          <div class="swinging-kraft-tag tag-heritage">
+            <div class="tag-eyelet"></div>
+            <div class="tag-head">🧶 AUTHENTIC BENGAL CRAFT</div>
+            <div class="tag-headline">Hand-Braided Mats</div>
+            <div class="tag-sub">Traditional Howrah Loom Clusters</div>
+            <div class="tag-badge-pill">100% Eco Biodegradable</div>
+          </div>
+        </div>
+
+        <!-- Right Rope: Handcrafted Artisan Seal Tag -->
+        <div class="hanging-rope-unit rope-right" id="ropeArtisanUnit">
+          <div class="braided-cord cord-long"></div>
+          <div class="rope-brass-knot"></div>
+          <div class="swinging-kraft-tag tag-heritage">
+            <div class="tag-eyelet"></div>
+            <div class="tag-seal-icon">🧶</div>
+            <div class="tag-headline">100% Hand-Braided</div>
+            <div class="tag-sub">Hooghly Artisan Guild</div>
+            <div class="tag-badge-pill">Natural Bast Fiber</div>
+          </div>
+        </div>
+
+        <!-- Ambient Floating Braided Tassels -->
+        <div class="hanging-rope-unit rope-tassel-1">
+          <div class="braided-cord cord-mini"></div>
+          <div class="jute-tassel-knot">🌾</div>
+        </div>
+        <div class="hanging-rope-unit rope-tassel-2">
+          <div class="braided-cord cord-mini-2"></div>
+          <div class="jute-tassel-knot">✨</div>
+        </div>
+      </div>
+
+      <div class="container hero-stage-grid">
+        <!-- Left Hero Content -->
+        <div class="hero-content-pane">
+          <div class="hero-pill-tag">
+            <span class="pulse-dot"></span>
+            <span>Bengal Golden Fiber Handcrafted Collection</span>
+          </div>
+
+          <h1 class="hero-main-title" id="heroHeading">
+            Bring Nature Home with <span>Artisan Handcrafted</span> Golden Jute
+          </h1>
+
+          <p class="hero-subtitle-text">
+            From Kolkata’s historic Hooghly craft belt straight to your doorstep. Replace plastic with 100% biodegradable shopping totes, circular braided floor rugs, heat-resistant dining mats, and woven planters.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#catalogSection" class="btn-main btn-glow">
+              <span>Explore Jute Collection</span> 🛍️
+            </a>
+            <a href="#artisanLoomVideoSection" class="btn-outline btn-video-cta">
+              <span>Watch Loom Weaving</span> 🎬
+            </a>
+            <button class="btn-secondary-soft" onclick="openB2BModal()">
+              <span>Wholesale & B2B Inquiry</span> 📑
+            </button>
+          </div>
+
+          <!-- Social Proof Bubble -->
+          <div class="hero-trust-box">
+            <div class="avatar-stack">
+              <span class="av av-1">🌱</span>
+              <span class="av av-2">🌿</span>
+              <span class="av av-3">🪴</span>
+              <span class="av av-4">🧶</span>
+            </div>
+            <div class="trust-desc">
+              <div class="trust-stars">★★★★★ <strong>4.9/5.0</strong></div>
+              <span>Loved by 12,000+ conscious homes & eco-architects</span>
+            </div>
+          </div>
+
+          <!-- 3 Quick Value Badges -->
+          <div class="hero-quick-features">
+            <div class="q-feat">
+              <span class="q-icon">🌿</span>
+              <div>
+                <strong>100% Organic Fiber</strong>
+                <small>Zero Plastic, Zero Waste</small>
+              </div>
+            </div>
+            <div class="q-feat">
+              <span class="q-icon">🏭</span>
+              <div>
+                <strong>Direct Mill Pricing</strong>
+                <small>Direct Bengal Weavers</small>
+              </div>
+            </div>
+            <div class="q-feat">
+              <span class="q-icon">🚚</span>
+              <div>
+                <strong>Pan-India Express</strong>
+                <small>Free on orders &gt; ₹999</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hero Interactive Showcase Stage with 3D Depth Card -->
+        <div class="hero-interactive-stage">
+          <div class="hero-showcase-frame" data-tilt="true">
+            <!-- Room Staging Switcher (Concept 1 Atelier feature) -->
+            <div class="hero-room-staging-bar">
+              <button class="room-tab-btn active" onclick="switchHeroRoom('rug', this)">🛋️ Living Room Rug</button>
+              <button class="room-tab-btn" onclick="switchHeroRoom('dining', this)">🍽️ Dining Table</button>
+              <button class="room-tab-btn" onclick="switchHeroRoom('balcony', this)">🪴 Boho Balcony</button>
+            </div>
+
+            <div class="frame-image-wrap">
+              <img src="assets/images/jute_floor_mat.jpg" alt="Luxury Hand-Braided Round Jute Rug" id="heroFeaturedImage" class="hero-stage-img">
+              <span class="frame-badge-label" id="heroImgBadge">4.0 Ft Mandala Rug</span>
+            </div>
+
+            <!-- Floating 3D Stat Card 1 -->
+            <div class="floating-stat-card card-top-right">
+              <div class="stat-badge-icon">🎖️</div>
+              <div>
+                <strong>45+ Years Mill Craft</strong>
+                <small>Direct Howrah Loom Clusters</small>
+              </div>
+            </div>
+
+            <!-- Floating 3D Stat Card 2 -->
+            <div class="floating-stat-card card-bottom-left">
+              <div class="stat-badge-icon">🌿</div>
+              <div>
+                <strong>Zero Microplastics</strong>
+                <small>Composts in 90-120 Days</small>
+              </div>
+            </div>
+
+            <!-- Interactive 3-Product Switcher Bar -->
+            <div class="stage-product-switcher">
+              <button class="stage-thumb-btn active" onclick="switchHeroProduct('assets/images/jute_tote_bag.jpg', 'Luxury Handcrafted Jute Tote Bag', 'Bestseller', this)">
+                <img src="assets/images/jute_tote_bag.jpg" alt="Tote Bag">
+                <span>Totes & Bags</span>
+              </button>
+              <button class="stage-thumb-btn" onclick="switchHeroProduct('assets/images/jute_floor_mat.jpg', 'Hand-Braided Round Jute Floor Rug', 'Artisan Choice', this)">
+                <img src="assets/images/jute_floor_mat.jpg" alt="Floor Rug">
+                <span>Braided Rugs</span>
+              </button>
+              <button class="stage-thumb-btn" onclick="switchHeroProduct('assets/images/jute_planter_basket.jpg', 'Handwoven Jute Planter Basket', 'Eco Living', this)">
+                <img src="assets/images/jute_planter_basket.jpg" alt="Planter Basket">
+                <span>Planters & Decor</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Infinite Animated Marquee Ribbon -->
+    <div class="marquee-ribbon" aria-hidden="true">
+      <div class="marquee-track">
+        <span>🌿 100% PURE GOLDEN JUTE</span>
+        <span class="m-dot">•</span>
+        <span>👜 HANDCRAFTED TOTE BAGS</span>
+        <span class="m-dot">•</span>
+        <span>🧶 HAND-BRAIDED MANDALA RUGS</span>
+        <span class="m-dot">•</span>
+        <span>🪴 ORGANIC WOVEN PLANTERS</span>
+        <span class="m-dot">•</span>
+        <span>🏭 DIRECT FACTORY MILL PRICING</span>
+        <span class="m-dot">•</span>
+        <span>🚚 FREE PAN-INDIA EXPRESS SHIPPING</span>
+        <span class="m-dot">•</span>
+        <span>🇮🇳 PROUDLY CRAFTED IN BENGAL</span>
+        <span class="m-dot">•</span>
+        <!-- Duplicated for seamless loop -->
+        <span>🌿 100% PURE GOLDEN JUTE</span>
+        <span class="m-dot">•</span>
+        <span>👜 HANDCRAFTED TOTE BAGS</span>
+        <span class="m-dot">•</span>
+        <span>🧶 HAND-BRAIDED MANDALA RUGS</span>
+        <span class="m-dot">•</span>
+        <span>🪴 ORGANIC WOVEN PLANTERS</span>
+        <span class="m-dot">•</span>
+        <span>🏭 DIRECT FACTORY MILL PRICING</span>
+        <span class="m-dot">•</span>
+        <span>🚚 FREE PAN-INDIA EXPRESS SHIPPING</span>
+        <span class="m-dot">•</span>
+        <span>🇮🇳 PROUDLY CRAFTED IN BENGAL</span>
+        <span class="m-dot">•</span>
+      </div>
+    </div>
+
+    <!-- 5. Asymmetrical Bento Grid Showcase (Categories) -->
+    <section class="bento-showcase-section" aria-label="Curated Categories">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-pre-title">Handcrafted Categories</span>
+          <h2 class="section-main-heading">Explore Handwoven Jute Collections</h2>
+          <p class="section-subtext">Thoughtfully curated for modern interior aesthetics, daily convenience, and conscious living.</p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Big Bento Card: Bags -->
+          <div class="bento-card bento-card-large" data-tilt="true" onclick="setCategoryFilter('bags')">
+            <div class="bento-img-bg" style="background-image: url('assets/images/jute_tote_bag.jpg');"></div>
+            <div class="bento-gradient-overlay"></div>
+            <div class="bento-card-body">
+              <span class="bento-tag">Daily Utility & Fashion</span>
+              <h3 class="bento-title">Jute Bags, Totes & Laptop Folios</h3>
+              <p class="bento-desc">Heavy-duty shopping totes, botanical printed handbags, and shock-padded laptop sleeves with teak toggles.</p>
+              <div class="bento-btn-row">
+                <span class="bento-link">Shop Bags Collection &rarr;</span>
+                <span class="bento-count-badge">3 Artifacts</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Medium Bento Card: Mats -->
+          <div class="bento-card bento-card-med" data-tilt="true" onclick="setCategoryFilter('mats')">
+            <div class="bento-img-bg" style="background-image: url('assets/images/jute_floor_mat.jpg');"></div>
+            <div class="bento-gradient-overlay"></div>
+            <div class="bento-card-body">
+              <span class="bento-tag">Living & Dining</span>
+              <h3 class="bento-title">Hand-Braided Rugs & Placemats</h3>
+              <p class="bento-desc">Circular 4ft mandala area rugs, heat-resistant dining mats with matching coasters, and dirt-trapping welcome door mats.</p>
+              <div class="bento-btn-row">
+                <span class="bento-link">Shop Mats & Rugs &rarr;</span>
+                <span class="bento-count-badge">4 Artifacts</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Small Bento Card: Planters -->
+          <div class="bento-card bento-card-small" data-tilt="true" onclick="setCategoryFilter('home')">
+            <div class="bento-img-bg" style="background-image: url('assets/images/jute_wall_hanging.jpg');"></div>
+            <div class="bento-gradient-overlay"></div>
+            <div class="bento-card-body">
+              <span class="bento-tag">Bohemian Decor</span>
+              <h3 class="bento-title">Planters & Macramé</h3>
+              <p class="bento-desc">Charming braided plant pot covers and macramé wall tapestries mounted on driftwood.</p>
+              <div class="bento-btn-row">
+                <span class="bento-link">Shop Decor &rarr;</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Small Bento Card: Wholesale B2B -->
+          <div class="bento-card bento-card-b2b" data-tilt="true" onclick="openB2BModal()">
+            <div class="b2b-card-inner">
+              <span class="bento-tag b2b-gold-tag">Direct Mill Factory</span>
+              <h3 class="bento-title">Custom Logo Printing & Wholesale</h3>
+              <p class="bento-desc">Supply your brand, event, or supermarket with custom printed jute bags. Direct Howrah mill pricing from 100 pcs.</p>
+              <button class="btn-main btn-sm" onclick="event.stopPropagation(); openB2BModal()">Request B2B Quote 💬</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Product Catalog Section (Modern Interactive Grid) -->
+    <section class="catalog-section" id="catalogSection" aria-labelledby="catalogHeading">
+      <div class="container">
+        <!-- Filter Controls Header -->
+        <div class="catalog-header-bar">
+          <div>
+            <span class="section-pre-title">Handcrafted Catalog</span>
+            <h2 id="catalogHeading" class="catalog-title">Curated Jute Artifacts</h2>
+            <p id="catalogCount" class="catalog-count-pill">Loading products...</p>
+          </div>
+
+          <div class="catalog-actions-bar">
+            <!-- Quick Chips -->
+            <div class="quick-chips-group">
+              <button class="chip-tab active" onclick="applyQuickFilter('all', this)">All Products</button>
+              <button class="chip-tab" onclick="applyQuickFilter('bestseller', this)">⭐ Bestsellers</button>
+              <button class="chip-tab" onclick="applyQuickFilter('under999', this)">🌿 Under ₹999</button>
+            </div>
+
+            <!-- Category Mobile Select -->
+            <select class="filter-dropdown" id="categoryFilterSelect" aria-label="Select Category">
+              <option value="all">All Categories</option>
+              <option value="bags">Jute Bags & Totes</option>
+              <option value="mats">Jute Mats & Rugs</option>
+              <option value="home">Planters & Home Decor</option>
+            </select>
+
+            <!-- Sort By -->
+            <select class="filter-dropdown" id="sortSelect" aria-label="Sort products by">
+              <option value="featured">Sort: Featured Collection</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Customer Rating</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Dynamic Product Cards Grid -->
+        <div class="products-grid" id="productsGrid" role="region" aria-live="polite">
+          <!-- Dynamically Rendered by js/app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.5. 3D Artisan Loom & Mat Weaving Live Video Studio (Light Theme Ambient Video & Step Masterclass) -->
+    <section class="artisan-loom-video-section" id="artisanLoomVideoSection" aria-label="Live Artisan Loom & Braided Mat Studio">
+      <!-- Ambient Looping Video Layer on Light Theme -->
+      <div class="video-ambient-backdrop" aria-hidden="true">
+        <video id="loomAmbientVideo" class="loom-bg-video" autoplay loop muted playsinline poster="assets/images/jute_floor_mat.jpg">
+          <source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/f/f0/Weaving_Tant_Saree_by_Handloom_-_2_Natun_Phulia_-_Nadia_2016-11-12_1811.webm/Weaving_Tant_Saree_by_Handloom_-_2_Natun_Phulia_-_Nadia_2016-11-12_1811.webm.480p.vp9.webm" type="video/webm">
+        </video>
+        <!-- Light warm linen glassmorphism overlay ensures 100% text readability while loom movement shows softly -->
+        <div class="video-light-glass-overlay"></div>
+      </div>
+
+      <div class="container video-studio-container">
+        <!-- Header with Live Badge & Controls -->
+        <div class="video-studio-header">
+          <div class="live-status-pill">
+            <span class="live-pulse-dot"></span>
+            <span>LIVE FROM BENGAL WEAVING CLUSTERS</span>
+          </div>
+          <h2 class="video-studio-heading">
+            Watch How Artisans <span>Braid Golden Jute Mats</span> by Hand
+          </h2>
+          <p class="video-studio-sub">
+            Real Bengal master artisans at work on wooden handlooms and circular braiding benches. Experience the rhythmic craft behind every round mandala floor rug, dining table runner, and woven door mat.
+          </p>
+
+          <!-- Floating Ambient Video Action Bar -->
+          <div class="video-control-bar">
+            <button class="v-ctrl-btn" id="toggleVideoPlayBtn" onclick="toggleLoomVideoPlay()">
+              <span id="vPlayIcon">⏸</span> <span id="vPlayText">Pause Ambient Video</span>
+            </button>
+            <button class="v-ctrl-btn" id="toggleVideoMuteBtn" onclick="toggleLoomVideoAudio()">
+              <span id="vMuteIcon">🔇</span> <span id="vMuteText">Sound Off</span>
+            </button>
+            <button class="v-ctrl-btn v-ctrl-primary" onclick="openVideoDocModal()">
+              <span>🎬 Watch 4K Full Documentary</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3D Interactive Mat Making Visualizer Showcase -->
+        <div class="mat-making-interactive-grid">
+          <!-- Left: 4 Step Interactive Selector Tabs -->
+          <div class="mat-steps-selector-col">
+            <div class="mat-step-tab active" onclick="selectMatCraftStep(1, this)">
+              <div class="mat-step-badge">Step 01</div>
+              <div class="mat-step-info">
+                <h4>Golden Bast Extraction & River Retting</h4>
+                <p>Monsoon-fed jute stalks soaked in freshwater to naturally release glistening golden strands.</p>
+              </div>
+              <span class="step-chevron">→</span>
+            </div>
+
+            <div class="mat-step-tab" onclick="selectMatCraftStep(2, this)">
+              <div class="mat-step-badge">Step 02</div>
+              <div class="mat-step-info">
+                <h4>3-Ply Cord Braiding by Hand</h4>
+                <p>Master weavers twist 3 thick strands into unbreakable, high-tensile braided cords.</p>
+              </div>
+              <span class="step-chevron">→</span>
+            </div>
+
+            <div class="mat-step-tab" onclick="selectMatCraftStep(3, this)">
+              <div class="mat-step-badge">Step 03</div>
+              <div class="mat-step-info">
+                <h4>Concentric Mandala Spiral Stitching</h4>
+                <p>The braided cord is coiled outwards row-by-row and locked with heavy curved needlework.</p>
+              </div>
+              <span class="step-chevron">→</span>
+            </div>
+
+            <div class="mat-step-tab" onclick="selectMatCraftStep(4, this)">
+              <div class="mat-step-badge">Step 04</div>
+              <div class="mat-step-info">
+                <h4>Solar Curing & Edge Heat-Binding</h4>
+                <p>Sun-dried on open village courtyards and trimmed clean with zero harmful toxic resins.</p>
+              </div>
+              <span class="step-chevron">→</span>
+            </div>
+          </div>
+
+          <!-- Right: 3D Visualizer Stage -->
+          <div class="mat-stage-preview-col">
+            <div class="mat-preview-3d-card" id="matPreview3DCard" data-tilt="true">
+              <div class="mat-preview-img-wrap">
+                <img src="assets/images/jute_floor_mat.jpg" alt="Braided Jute Mandala Mat Crafting" id="matStepPreviewImg">
+                <div class="mat-preview-live-tag" id="matStepLiveBadge">Step 01 • River Retting</div>
+              </div>
+              <div class="mat-preview-details">
+                <h3 id="matStepDetailTitle">Hooghly River Natural Retting</h3>
+                <p id="matStepDetailDesc">
+                  Artisans bundle mature jute stems and gently submerge them in flowing river currents for 14-21 days. Microbes naturally soften the pectins, yielding strong, glossy golden bast fibers with zero chemicals.
+                </p>
+                <div class="mat-craft-specs">
+                  <div class="m-spec">
+                    <span>Weaving Speed</span>
+                    <strong>12-14 hrs / Rug</strong>
+                  </div>
+                  <div class="m-spec">
+                    <span>Tensile Strength</span>
+                    <strong>Over 350 kg/m²</strong>
+                  </div>
+                  <div class="m-spec">
+                    <span>Fiber Purity</span>
+                    <strong>100% Unbleached</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.7. Direct Mill Wholesale & Bulk Pricing Calculator (Concept 3 Heritage Mill Feature) -->
+    <section class="bulk-calculator-section" id="bulkCalculator" aria-labelledby="calcHeading">
+      <div class="container">
+        <div class="bulk-calc-card">
+          <div class="bulk-calc-header">
+            <span class="section-pre-title" style="color: #f7ce7a;">Direct Bengal Mill Pricing</span>
+            <h2 class="section-main-heading" id="calcHeading" style="color: #ffffff;">
+              Instant Wholesale &amp; Bulk Order Calculator
+            </h2>
+            <p style="color: #cbdad0; max-width: 650px; margin: 0 auto; font-size: 0.95rem;">
+              Save up to 48% with direct mill supply for home retailers, eco-resorts, organic supermarket brands, and corporate gifting.
+            </p>
+          </div>
+
+          <div class="bulk-calc-grid">
+            <div class="calc-inputs-col">
+              <div class="form-group">
+                <label class="form-label" style="color: #faebd3; font-weight: 700;">Select Jute Artifact Category *</label>
+                <select class="form-control" id="calcProductSelect" onchange="calculateBulkPrice()">
+                  <option value="mat" data-retail="1899" data-bulk100="980" data-bulk500="790" selected>4Ft Hand-Braided Mandala Floor Rugs</option>
+                  <option value="tote" data-retail="499" data-bulk100="240" data-bulk500="185">Custom Logo Printed Jute Tote Bags</option>
+                  <option value="dining" data-retail="799" data-bulk100="420" data-bulk500="340">Dining Placemats &amp; Coasters (Set of 6)</option>
+                  <option value="planter" data-retail="399" data-bulk100="195" data-bulk500="150">Handwoven Jute Planter Baskets</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <label class="form-label" style="color: #faebd3; margin: 0; font-weight: 700;">Quantity Required (Pieces)</label>
+                  <span class="calc-qty-pill" id="calcQtyDisplay">100 Pieces</span>
+                </div>
+                <input type="range" class="calc-slider" id="calcQtySlider" min="50" max="1000" step="25" value="100" oninput="calculateBulkPrice()">
+                <div class="slider-marks">
+                  <span>50 Pcs</span>
+                  <span>250 Pcs</span>
+                  <span>500 Pcs</span>
+                  <span>1000+ Pcs</span>
+                </div>
+              </div>
+
+              <div class="calc-options-row">
+                <label class="calc-checkbox-label">
+                  <input type="checkbox" id="calcCustomPrint" checked onchange="calculateBulkPrice()">
+                  <span>Include Custom Screen Printed Brand Logo / Tag</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Price Output & Direct WhatsApp Trigger -->
+            <div class="calc-summary-col">
+              <div class="calc-estimate-box">
+                <span class="est-label">Estimated Direct Mill Rate</span>
+                <div class="est-price-row">
+                  <strong class="est-unit-price" id="calcUnitPrice">₹980</strong>
+                  <span class="est-per-pc">/ Pc</span>
+                  <span class="est-saving-pill" id="calcDiscountPill">48% OFF Retail</span>
+                </div>
+
+                <div class="calc-breakdown-list">
+                  <div class="c-row">
+                    <span>Standard Retail Value:</span>
+                    <strike id="calcRetailTotal">₹1,89,900</strike>
+                  </div>
+                  <div class="c-row">
+                    <span>Direct Mill Invoice:</span>
+                    <strong id="calcMillTotal" style="color: #f7ce7a; font-size: 1.25rem;">₹98,000</strong>
+                  </div>
+                  <div class="c-row" style="color: #4ade80;">
+                    <span>Your Bulk Savings:</span>
+                    <strong id="calcSavedAmount">₹91,900 (48%)</strong>
+                  </div>
+                </div>
+
+                <button class="btn-main btn-block" onclick="sendBulkWhatsAppQuote()" style="background: #25d366; color: #ffffff; border-color: #25d366; margin-top: 1.25rem;">
+                  <span>Get Official Quote on WhatsApp</span> 💬
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Interactive 4-Stage Craft Journey ("From Soil to Loom") -->
+    <section class="craft-journey-section" id="artisanSection" aria-label="Artisan Craftsmanship Journey">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-pre-title">Authentic Craft Heritage</span>
+          <h2 class="section-main-heading">From Bengal Soil to Your Living Space</h2>
+          <p class="section-subtext">How our generational artisans spin natural golden plant bast into durable, plastic-free living essentials.</p>
+        </div>
+
+        <div class="journey-steps-grid">
+          <!-- Step 1 -->
+          <div class="journey-step-card">
+            <div class="step-num-pill">01</div>
+            <div class="step-icon">🌱</div>
+            <h3>Gangetic Monsoon Sowing</h3>
+            <p>Jute seeds are naturally sown in rich delta silt along the Hooghly river. The crop is rain-fed, requiring zero harmful chemical pesticides.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="journey-step-card">
+            <div class="step-num-pill">02</div>
+            <div class="step-icon">💧</div>
+            <h3>Natural Fiber Retting</h3>
+            <p>Harvested stems are submerged in slow-moving fresh river water, naturally separating the tough, golden-sheened bast fibers without toxins.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="journey-step-card">
+            <div class="step-num-pill">03</div>
+            <div class="step-icon">🧶</div>
+            <h3>Hand-Braiding & Mill Weaving</h3>
+            <p>Master weaver clusters in Howrah spin and hand-braid fibers into high-tensile cords, crafting intricate mandala patterns and sturdy handles.</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="journey-step-card">
+            <div class="step-num-pill">04</div>
+            <div class="step-icon">🏡</div>
+            <h3>Sustainable Living in Your Home</h3>
+            <p>Delivered zero-plastic to your door. Durable for years of use, and returning harmlessly to the earth as natural soil compost at the end of life.</p>
+          </div>
+        </div>
+
+        <!-- 4 Live Environmental Counters -->
+        <div class="environmental-counter-bar">
+          <div class="counter-box">
+            <span class="counter-number">50,000+</span>
+            <span class="counter-label">Plastic Bags Avoided</span>
+          </div>
+          <div class="counter-box">
+            <span class="counter-number">100+</span>
+            <span class="counter-label">Artisan Families Empowered</span>
+          </div>
+          <div class="counter-box">
+            <span class="counter-number">45+</span>
+            <span class="counter-label">Years of Fiber Lineage</span>
+          </div>
+          <div class="counter-box">
+            <span class="counter-number">100%</span>
+            <span class="counter-label">Natural Soil Compostable</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Interactive Lookbook / Living Spaces Showcase (#MyDindayalHome) -->
+    <section class="lookbook-section" aria-label="Customer Lookbook">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-pre-title">Real Spaces</span>
+          <h2 class="section-main-heading">Styled in Conscious Living Spaces</h2>
+          <p class="section-subtext">See how homeowners and interior architects integrate natural jute into modern living rooms and dining areas.</p>
+        </div>
+
+        <div class="lookbook-grid">
+          <div class="lookbook-item">
+            <img src="assets/images/jute_floor_mat.jpg" alt="4ft Mandala Jute Rug in Sunlit Living Room" loading="lazy">
+            <div class="lookbook-caption">
+              <strong>Living Room Nook</strong>
+              <span>4ft Hand-Braided Mandala Rug</span>
+            </div>
+          </div>
+          <div class="lookbook-item">
+            <img src="assets/images/jute_table_mat.jpg" alt="Braided Jute Dining Placemats & Coasters on Wood Table" loading="lazy">
+            <div class="lookbook-caption">
+              <strong>Warm Dining Table</strong>
+              <span>Set of 6 Placemats & Coasters</span>
+            </div>
+          </div>
+          <div class="lookbook-item">
+            <img src="assets/images/jute_planter_basket.jpg" alt="Woven Jute Planter Basket with Greenery" loading="lazy">
+            <div class="lookbook-caption">
+              <strong>Botanical Balcony</strong>
+              <span>Handwoven Jute Planter Basket</span>
+            </div>
+          </div>
+          <div class="lookbook-item">
+            <img src="assets/images/jute_wall_hanging.jpg" alt="Bohemian Jute Macrame Tapestry on Wall" loading="lazy">
+            <div class="lookbook-caption">
+              <strong>Boho Wall Accent</strong>
+              <span>Macramé Hanging on Driftwood</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Verified Customer Testimonials Grid -->
+    <section class="testimonials-section" aria-label="Customer Reviews">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-pre-title">Real Customer Feedback</span>
+          <h2 class="section-main-heading">What Our Customers Say</h2>
+          <p class="section-subtext">Over 12,000 verified buyers across India trust our direct mill quality.</p>
+        </div>
+
+        <div class="reviews-grid">
+          <!-- Review 1 -->
+          <div class="review-bubble-card">
+            <div class="review-stars-row">★★★★★ <span class="verified-badge">✓ Verified Buyer</span></div>
+            <p class="review-quote-text">
+              "The 4-Foot Braided Mandala Rug completely transformed our living room. It feels warm, earthy, and luxurious underfoot. The quality of the braided weave is remarkable!"
+            </p>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">AD</div>
+              <div>
+                <strong>Ananya Dasgupta</strong>
+                <span>Interior Designer, Bangalore</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="review-bubble-card">
+            <div class="review-stars-row">★★★★★ <span class="verified-badge">✓ B2B Client</span></div>
+            <p class="review-quote-text">
+              "We ordered 50 custom printed jute tote bags for our sustainable corporate retreat in Mumbai. The silk-screen logo was crisp, the handles are sturdy, and delivery arrived 2 days early!"
+            </p>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">RM</div>
+              <div>
+                <strong>Rohit Mehta</strong>
+                <span>Brand Director, Mumbai</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="review-bubble-card">
+            <div class="review-stars-row">★★★★★ <span class="verified-badge">✓ Verified Buyer</span></div>
+            <p class="review-quote-text">
+              "The dining table mats and matching coasters look stunning on our teak wood dining table. Heat resistant, wipe-clean, and completely plastic-free. Highly recommended!"
+            </p>
+            <div class="reviewer-meta">
+              <div class="reviewer-avatar">SK</div>
+              <div>
+                <strong>Sneha Kulkarni</strong>
+                <span>Architect, Pune</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. B2B Wholesale Banner -->
+    <section class="b2b-highlight-section" id="b2bSection" aria-labelledby="b2bHeading">
+      <div class="container">
+        <div class="b2b-cta-card">
+          <div class="b2b-cta-text">
+            <span class="b2b-pre-pill">Direct Factory Supply</span>
+            <h3 id="b2bHeading">Need Custom Printed Jute Bags or Wholesale Quantities?</h3>
+            <p>
+              We are premier suppliers to supermarkets, organic food brands, corporate summits, and global export buyers. Custom screen printed logos, customized dimensions, and tiered volume discounts direct from our Howrah mill belt.
+            </p>
+            <div class="b2b-perks-row">
+              <span>✓ MOQ from 100 Pcs</span>
+              <span>✓ Silk-Screen & Offset Logo Printing</span>
+              <span>✓ GST Tax Invoice Provided</span>
+              <span>✓ Export Documentation</span>
+            </div>
+          </div>
+          <div class="b2b-cta-actions">
+            <button class="btn-main btn-lg btn-glow" onclick="openB2BModal()">
+              <span>Request Wholesale Quote</span> 💬
+            </button>
+            <a href="tel:+919836677089" class="btn-outline btn-lg b2b-tel-link">
+              <span>Direct Mill Line: +91 98366 77089</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Interactive FAQ Accordion -->
+    <section class="faq-section" id="faqSection" aria-label="Frequently Asked Questions">
+      <div class="container faq-narrow">
+        <div class="section-title-wrap">
+          <span class="section-pre-title">Got Questions?</span>
+          <h2 class="section-main-heading">Frequently Asked Questions</h2>
+          <p class="section-subtext">Clear answers on caring for natural jute, delivery times, and custom printing.</p>
+        </div>
+
+        <div class="faq-accordion-box">
+          <!-- FAQ 1 -->
+          <details class="faq-item-card" open>
+            <summary class="faq-question-btn">
+              <span>How do I clean and care for my handcrafted jute floor rug or mats?</span>
+              <span class="faq-plus-icon">+</span>
+            </summary>
+            <div class="faq-answer-body">
+              <p>
+                Natural jute is naturally stain-resistant and easy to maintain. Simply vacuum regularly or shake gently outside to remove loose dust. For spills, blot immediately with a clean, dry cloth or damp sponge without scrubbing. Avoid soaking in water or machine washing to preserve fiber tightness.
+              </p>
+            </div>
+          </details>
+
+          <!-- FAQ 2 -->
+          <details class="faq-item-card">
+            <summary class="faq-question-btn">
+              <span>Are your jute tote bags water-resistant?</span>
+              <span class="faq-plus-icon">+</span>
+            </summary>
+            <div class="faq-answer-body">
+              <p>
+                Yes! Our tote bags and shopping bags feature a thin, biodegradable food-safe inner moisture membrane that prevents liquid leakage and allows easy wipe-cleaning with a damp cloth, while keeping the exterior 100% natural and unbleached.
+              </p>
+            </div>
+          </details>
+
+          <!-- FAQ 3 -->
+          <details class="faq-item-card">
+            <summary class="faq-question-btn">
+              <span>What are the shipping timelines across India?</span>
+              <span class="faq-plus-icon">+</span>
+            </summary>
+            <div class="faq-answer-body">
+              <p>
+                All orders are dispatched within 24 to 48 hours from our Kolkata fulfillment center. Metro cities generally receive delivery in 3 to 4 business days; other regions in 4 to 6 business days with SMS and Email tracking updates.
+              </p>
+            </div>
+          </details>
+
+          <!-- FAQ 4 -->
+          <details class="faq-item-card">
+            <summary class="faq-question-btn">
+              <span>Can we order custom sizes and branded logos for corporate events?</span>
+              <span class="faq-plus-icon">+</span>
+            </summary>
+            <div class="faq-answer-body">
+              <p>
+                Absolutely! Our Howrah mill facilities support custom PMS color screen printing, specialized handles, and custom dimensions. Click "Wholesale B2B" or contact our sales team directly at +91 98366 77089 for sample kits and custom pricing.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. VIP Newsletter Strip -->
+    <section class="newsletter-strip-section" aria-label="Newsletter">
+      <div class="container">
+        <div class="newsletter-box">
+          <div class="newsletter-text">
+            <span class="badge-pill">🌿 Green Living Club</span>
+            <h3>Get 10% Off Your First Order</h3>
+            <p>Join over 15,000 conscious homeowners for styling tips and exclusive artisan discounts.</p>
+          </div>
+          <form class="newsletter-form" onsubmit="event.preventDefault(); showToast('Subscribed! Use code ECO10 for 10% off at checkout.', 'success'); this.reset();">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address..." required>
+            <button type="submit" class="btn-main">Claim 10% Off &rarr;</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Slide-Out Shopping Bag Drawer -->
+  <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="if(event.target === this) closeCartDrawer()">
+    <div class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle">
+      <div class="cart-header">
+        <div class="cart-header-title" id="cartDrawerTitle">
+          <span>🛍️ Your Shopping Bag</span>
+        </div>
+        <button class="cart-close-btn" onclick="closeCartDrawer()" aria-label="Close Bag">✕</button>
+      </div>
+
+      <!-- Free Shipping Progress Bar -->
+      <div class="cart-free-shipping-bar">
+        <div id="cartProgressText">Calculating shipping offer...</div>
+        <div class="cart-progress-track">
+          <div class="cart-progress-fill" id="cartProgressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div class="cart-items-list" id="cartItemsList">
+        <!-- Rendered by js/app.js -->
+      </div>
+
+      <!-- Cart Drawer Footer -->
+      <div class="cart-footer" id="cartDrawerFooter">
+        <div class="coupon-section">
+          <input type="text" class="coupon-input" id="cartCouponInput" placeholder="PROMO CODE (e.g. ECO10)">
+          <button class="btn-outline btn-sm" onclick="handleApplyCoupon()">Apply</button>
+        </div>
+
+        <div id="cartDrawerSummary">
+          <!-- Rendered by js/app.js -->
+        </div>
+
+        <button class="btn-main btn-block btn-lg" onclick="openCheckoutModal()" style="margin-top: 0.75rem;">
+          <span>Proceed to Checkout</span> 🔒
+        </button>
+      </div>
+    </div>
+  </div>
+
+  
+    </div>
+  </div>
+
+  <!-- MODAL 1: Product Quick View -->
+  <div class="modal-backdrop" id="quickViewModal" onclick="if(event.target === this) closeModal('quickViewModal')">
+    <div class="modal-content-card" role="dialog" aria-modal="true" aria-labelledby="quickViewTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="quickViewTitle">Product Details</h3>
+        <button class="cart-close-btn" onclick="closeModal('quickViewModal')">✕</button>
+      </div>
+      <div class="modal-body" id="quickViewModalBody">
+        <!-- Rendered by js/app.js -->
+      </div>
+    </div>
+  </div>
+
+  
+    </div>
+  </div>
+
+  <!-- MODAL 2: Interactive Checkout Modal -->
+  <div class="modal-backdrop" id="checkoutModal" onclick="if(event.target === this) closeModal('checkoutModal')">
+    <div class="modal-content-card checkout-modal-card" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="checkoutModalTitle">
+          <span>🔒 Express Checkout & Payment</span>
+        </h3>
+        <button class="cart-close-btn" onclick="closeModal('checkoutModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handlePlaceOrderSubmit(event)">
+          <div class="checkout-grid">
+            <!-- Left Column: Shipping Address Details -->
+            <div>
+              <h4 class="checkout-step-heading">
+                1. Delivery Address
+              </h4>
+
+              <div class="form-group">
+                <label class="form-label" for="checkoutName">Full Name *</label>
+                <input type="text" class="form-control" id="checkoutName" required placeholder="e.g. Rahul Sen">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="checkoutPhone">Mobile Number (For Delivery Updates) *</label>
+                  <input type="tel" class="form-control" id="checkoutPhone" required placeholder="+91 98765 43210">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="checkoutEmail">Email Address (For Invoice) *</label>
+                  <input type="email" class="form-control" id="checkoutEmail" required placeholder="rahul@example.com">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="checkoutAddress">Street Address / Flat / Floor *</label>
+                <input type="text" class="form-control" id="checkoutAddress" required placeholder="e.g. Flat 4B, Greenwood Heights, Salt Lake">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="checkoutCity">City *</label>
+                  <input type="text" class="form-control" id="checkoutCity" required value="Kolkata">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="checkoutState">State *</label>
+                  <input type="text" class="form-control" id="checkoutState" required value="West Bengal">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="checkoutPincode">PIN Code *</label>
+                  <input type="text" class="form-control" id="checkoutPincode" required placeholder="700091" maxlength="6">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="checkoutNotes">Order Notes (Optional)</label>
+                  <input type="text" class="form-control" id="checkoutNotes" placeholder="Delivery instructions...">
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Order Review & Interactive Payment Method -->
+            <div>
+              <div id="checkoutOrderReview" style="margin-bottom: 1.5rem;">
+                <!-- Rendered dynamically -->
+              </div>
+
+              <h4 class="checkout-step-heading">
+                2. Select Payment Method
+              </h4>
+
+              <!-- Payment Tabs -->
+              <div class="payment-tabs" role="tablist">
+                <button type="button" class="payment-tab-btn active" data-method="upi" onclick="switchPaymentMethod('upi')">
+                  <span>📱</span>
+                  <span>UPI / QR</span>
+                </button>
+                <button type="button" class="payment-tab-btn" data-method="card" onclick="switchPaymentMethod('card')">
+                  <span>💳</span>
+                  <span>Card</span>
+                </button>
+                <button type="button" class="payment-tab-btn" data-method="netbanking" onclick="switchPaymentMethod('netbanking')">
+                  <span>🏦</span>
+                  <span>NetBanking</span>
+                </button>
+                <button type="button" class="payment-tab-btn" data-method="cod" onclick="switchPaymentMethod('cod')">
+                  <span>💵</span>
+                  <span>COD</span>
+                </button>
+              </div>
+
+              <!-- Payment Method Dynamic Container -->
+              <div id="paymentMethodContent" style="margin-bottom: 1.5rem;">
+                <!-- Rendered by js/app.js -->
+              </div>
+
+              <button type="submit" class="btn-main btn-block btn-lg" id="placeOrderSubmitBtn">
+                <span>Complete Payment & Place Order</span> 🔒
+              </button>
+              <div style="text-align: center; margin-top: 0.6rem; font-size: 0.75rem; color: var(--text-light);">
+                🛡️ 256-Bit Encrypted Secure SSL Checkout • Instant Confirmation
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+    </div>
+  </div>
+
+  <!-- MODAL 3: Order Success & Printable Receipt -->
+  <div class="modal-backdrop" id="orderSuccessModal" onclick="if(event.target === this) closeModal('orderSuccessModal')">
+    <div class="modal-content-card" style="max-width: 620px;" role="dialog" aria-modal="true">
+      <div class="modal-body" id="orderSuccessModalBody">
+        <!-- Rendered by js/app.js -->
+      </div>
+    </div>
+  </div>
+
+  
+    </div>
+  </div>
+
+  <!-- MODAL 4: B2B Bulk Quotation Request -->
+  <div class="modal-backdrop" id="b2bModal" onclick="if(event.target === this) closeModal('b2bModal')">
+    <div class="modal-content-card" style="max-width: 560px;" role="dialog" aria-modal="true" aria-labelledby="b2bModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="b2bModalTitle">Request Wholesale / B2B Quotation</h3>
+        <button class="cart-close-btn" onclick="closeModal('b2bModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleB2BSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Contact Person Name *</label>
+              <input type="text" class="form-control" id="b2bName" required placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company / Brand Name *</label>
+              <input type="text" class="form-control" id="b2bCompany" required placeholder="Business or shop name">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Phone / WhatsApp Number *</label>
+              <input type="tel" class="form-control" id="b2bPhone" required placeholder="+91 98366 77089">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              <input type="email" class="form-control" id="b2bEmail" required placeholder="contact@company.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Product Category of Interest *</label>
+            <select class="form-control" id="b2bProductInterest">
+              <option value="Jute Shopping & Tote Bags (Custom Logo)">Jute Shopping & Tote Bags (Custom Printed Logo)</option>
+              <option value="Jute Floor Mats & Area Rugs">Handcrafted Jute Floor Mats & Rugs</option>
+              <option value="Jute Dining Table Placemats & Coasters">Jute Dining Table Placemats & Coasters</option>
+              <option value="Handwoven Jute Planters & Baskets">Handwoven Jute Planters & Baskets</option>
+              <option value="Geotextile Soil Saver Matting">Geotextile Soil Saver Matting</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Estimated Quantity Required (Pieces or Meters) *</label>
+            <input type="text" class="form-control" id="b2bQuantity" required placeholder="e.g. 500 Pcs, 2000 Meters">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Specific Requirements / Dimensions / Colors</label>
+            <textarea class="form-control" id="b2bNotes" rows="3" placeholder="Tell us about handle types, dimensions, print colors, deadline..."></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+            <button type="button" class="btn-outline" onclick="closeModal('b2bModal')">Cancel</button>
+            <button type="submit" class="btn-main">Submit Quotation Request 🚀</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+    </div>
+  </div>
+
+  <!-- MODAL 5: Artisan Mat Weaving 4K Documentary Modal -->
+  <div class="modal-backdrop" id="videoDocModal" onclick="if(event.target === this) closeVideoDocModal()">
+    <div class="modal-content-card modal-video-card" role="dialog" aria-modal="true" aria-labelledby="videoDocTitle">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" id="videoDocTitle">🎬 Bengal Loom &amp; Braided Jute Mat Crafting</h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Master artisans spinning and hand-braiding golden jute fibers into circular mats</span>
+        </div>
+        <button class="cart-close-btn" onclick="closeVideoDocModal()">✕</button>
+      </div>
+      <div class="modal-body modal-video-body">
+        <div class="video-aspect-frame" id="modalVideoFrame">
+          <!-- Dynamically injected with 100% playable video player by js/app.js -->
+          <iframe id="modalVideoIframe" src="https://www.youtube.com/embed/BHbDLSXmtBA?rel=0&amp;modestbranding=1" title="Bengal Artisan Jute Mat Crafting" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%; border: none; border-radius: var(--radius-md);"></iframe>
+        </div>
+        <div class="video-modal-desc">
+          <h4>How a 4ft Mandala Braided Rug Takes Shape:</h4>
+          <p>
+            Watch generational craftsmen transform raw jute bundles into luxurious, heat-resistant, and soil-friendly floor mats. Every concentric circle is hand-coiled and locked with heavy-gauge jute twine so it never unfurls under decades of daily foot traffic.
+          </p>
+          <div class="modal-video-tags">
+            <span class="m-vtag">🌿 100% Biodegradable</span>
+            <span class="m-vtag">🧶 Hand-Braided Mandala</span>
+            <span class="m-vtag">🏭 Howrah Loom Belt</span>
+            <span class="m-vtag">🇮🇳 Bengal Artisans</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating WhatsApp Chat Button with Pulse -->
+  <a id="whatsappFloatingBtn" class="whatsapp-floating-btn" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp" aria-label="WhatsApp Support">
+    <span class="wa-ping-pulse"></span>
+    <span class="wa-tooltip-text">Chat with Mill Sales Desk</span>
+    <span class="wa-icon-symbol">💬</span>
+  </a>
+
+  <!-- Floating Back to Top Button -->
+  <button id="backToTopBtn" class="back-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});" aria-label="Back to Top" title="Back to Top">
+    ↑
+  </button>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid-layout">
+        <!-- Col 1: About & Trust -->
+        <div class="footer-col">
+          <div class="footer-logo-wrap">
+            <div class="f-logo-icon">🌱</div>
+            <div>
+              <h3 class="f-brand-title">Dindayal Jute & Craft</h3>
+              <span class="f-brand-sub">Indian Jute House Enterprise</span>
+            </div>
+          </div>
+          <p id="footerStoreTagline" class="f-tagline">
+            100% Eco-Friendly, Handcrafted Natural Jute Bags, Mats, Planters & Home Decor from Kolkata.
+          </p>
+          <p class="f-mission">
+            Empowering rural artisan weaver clusters across Bengal while eliminating petroleum single-use plastics through durable golden jute.
+          </p>
+          <div style="margin-top: 1.25rem;">
+            <span class="badge-pill" id="footerGstin">GSTIN: 19AACFD2094B1ZS</span>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="footer-col">
+          <h4>Handcrafted Collections</h4>
+          <ul class="footer-links">
+            <li><a href="#catalogSection" onclick="setCategoryFilter('all')">All Jute Collection</a></li>
+            <li><a href="#catalogSection" onclick="setCategoryFilter('bags')">Bags, Totes & Laptop Folios</a></li>
+            <li><a href="#catalogSection" onclick="setCategoryFilter('mats')">Hand-Braided Floor Mats & Rugs</a></li>
+            <li><a href="#catalogSection" onclick="setCategoryFilter('home')">Planters & Macramé Decor</a></li>
+            <li><a href="javascript:void(0)" onclick="openB2BModal()">Wholesale & Mill Custom Printing</a></li>
+            <li><a href="#artisanSection">Artisan Craft Journey</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Customer Care & Policies -->
+        <div class="footer-col">
+          <h4>Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="showToast('Free express delivery applies to all domestic orders above ₹999.', 'info')">Shipping & Express Delivery</a></li>
+            <li><a href="javascript:void(0)" onclick="showToast('We provide 7-day hassle-free replacement on transit damages.', 'info')">7-Day Replacement Policy</a></li>
+            <li><a href="#faqSection">Care & Cleaning Guide</a></li>
+            <li><a href="javascript:void(0)" onclick="openCheckoutModal()">Track Your Order</a></li>
+            <li><a href="javascript:void(0)" onclick="openB2BModal()">Export & International Shipping</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Contact & Mills -->
+        <div class="footer-col">
+          <h4>Mill Office & Works</h4>
+          <ul class="footer-contact-items">
+            <li>
+              <span>📍</span>
+              <span id="footerAddress">Plot No. 2, Block DN, 13th Floor, Signet Tower, Sector V, Bidhannagar, Kolkata - 700091</span>
+            </li>
+            <li>
+              <span>🏭</span>
+              <span>Works: Howrah Jute Mill Belt, West Bengal, India</span>
+            </li>
+            <li>
+              <span>📞</span>
+              <a href="tel:+919836677089" id="footerPhone">+91 98366 77089 / +91 98746 16929</a>
+            </li>
+            <li>
+              <span>✉️</span>
+              <a href="mailto:sales@dindayalropes.com" id="footerEmail">sales@dindayalropes.com</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom-bar">
+        <div>
+          © 2026 <strong>Dindayal Ropes (India)</strong> & <strong>Indian Jute House</strong>. All Rights Reserved.
+        </div>
+        <div class="footer-bottom-badges">
+          <span>🌿 100% Biodegradable & Compostable</span>
+          <span>•</span>
+          <span>Proudly Crafted in Kolkata, India 🇮🇳</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/products-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

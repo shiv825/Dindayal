@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Control Center | Dindayal Jute & Craft</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Authorized administration and inventory console for Dindayal & Indian Jute House.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body.admin-body {
+      background-color: #f4efe6;
+      color: #18281f;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-body);
+    }
+
+    .admin-header-bar {
+      background: #18432d;
+      border-bottom: 3px solid var(--accent-gold);
+      padding: 0.85rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+    }
+
+    .admin-brand-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--accent-gold);
+      color: #ffffff;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .admin-brand-text h1 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .admin-brand-text span {
+      font-size: 0.75rem;
+      color: var(--accent-gold-light);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .admin-header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .private-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .storefront-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--accent-gold);
+      color: #ffffff;
+      border: 1px solid var(--accent-gold);
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: 0.825rem;
+      font-weight: 700;
+      transition: all var(--transition-fast);
+      text-decoration: none;
+    }
+
+    .storefront-link-btn:hover {
+      background: #b37a1f;
+      transform: translateY(-1px);
+    }
+
+    .admin-main-wrap {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .admin-canvas-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      min-height: 600px;
+    }
+
+    .admin-footer-bar {
+      background: #0f2419;
+      color: #a4bea9;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Top Admin Control Header -->
+  <header class="admin-header-bar">
+    <a href="/admin" class="admin-brand">
+      <div class="admin-brand-icon">🌱</div>
+      <div class="admin-brand-text">
+        <h1>Dindayal &amp; Indian Jute House</h1>
+        <span>Store Administration Console</span>
+      </div>
+    </a>
+
+    <div class="admin-header-right">
+      <span class="private-badge">
+        <span>🔒</span> Confidential Staff Source
+      </span>
+      <a href="/" target="_blank" rel="noopener noreferrer" class="storefront-link-btn" title="Open customer website in a new tab">
+        <span>👁️ View Live Storefront &rarr;</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Management Body -->
+  <main class="admin-main-wrap">
+    <div class="admin-canvas-card" id="adminPortalBody">
+      <!-- Dynamically rendered by js/admin.js -->
+      <div style="padding: 4rem 2rem; text-align: center; color: var(--text-muted);">
+        <p>Initializing Secure Admin Workspace...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add / Edit Product Modal -->
+  <div class="modal-backdrop" id="adminProductFormModal" style="z-index: 1200;" onclick="if(event.target === this) closeModal('adminProductFormModal')">
+    <div class="modal-content-card" style="max-width: 650px;" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 class="modal-title" id="adminProductFormTitle">Add / Edit Jute Product</h3>
+        <button class="cart-close-btn" onclick="closeModal('adminProductFormModal')">✕</button>
+      </div>
+      <div class="modal-body" id="adminProductFormModalBody">
+        <!-- Rendered by js/admin.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Footer Info -->
+  <footer class="admin-footer-bar">
+    Dindayal Ropes (India) &amp; Indian Jute House • Private Admin Management Portal • Kolkata, West Bengal
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/products-data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
