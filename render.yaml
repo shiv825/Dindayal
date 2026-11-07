@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: dindayal-backend
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        value: fj2pbcqf
+      - key: CLOUDINARY_API_KEY
+        value: 771673627721144
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false
