@@ -236,6 +236,23 @@ export const api = {
   async deleteProduct(id: string): Promise<boolean> {
     const res = await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
     return res.ok;
-  }
+  },
+
+  async uploadMedia(file: File, folder = 'dindayal/products'): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', folder);
+
+    const res = await fetch(`${API_BASE}/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Cloudinary upload failed');
+    }
+    const data = await res.json();
+    return data.data.url;
+  },
 };
 

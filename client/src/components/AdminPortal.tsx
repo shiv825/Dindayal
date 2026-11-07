@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { X, Video, Package, MessageSquare, Save, Plus, Trash2, Check, RefreshCw } from 'lucide-react';
-import { Product, SiteSettings, WholesaleInquiry } from '../types';
+import { X, Video, Package, Save, Plus, Trash2, Check, RefreshCw, Upload, Image, Film, Loader2 } from 'lucide-react';
+import { Product, SiteSettings } from '../types';
 import { api } from '../lib/api';
 
 interface AdminPortalProps {
@@ -20,7 +20,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   products,
   onRefreshProducts,
 }) => {
-  const [activeTab, setActiveTab] = useState<'video' | 'products' | 'inquiries'>('video');
+  const [activeTab, setActiveTab] = useState<'video' | 'products'>('video');
   
   // Video settings local state
   const [ambientVideoUrl, setAmbientVideoUrl] = useState(settings.ambient_video_url);
@@ -29,6 +29,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [announcementText, setAnnouncementText] = useState(settings.announcement_text);
   const [isSavingVideo, setIsSavingVideo] = useState(false);
   const [videoSaveSuccess, setVideoSaveSuccess] = useState(false);
+  const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
   // New Product Modal State
   const [newTitle, setNewTitle] = useState('');
@@ -39,6 +40,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [newWeave, setNewWeave] = useState('');
   const [newImage, setNewImage] = useState('/assets/images/jute_floor_mat.jpg');
   const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [isUploadingProductImage, setIsUploadingProductImage] = useState(false);
 
   if (!isOpen) return null;
 
@@ -50,6 +52,42 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
       setDocVideoUrl('https://www.youtube.com/embed/5qap5aO4i9A');
     } else if (type === 'mp4_craft') {
       setAmbientVideoUrl('https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-weaving-a-basket-43845-large.mp4');
+    }
+  };
+
+  // Cloudinary Upload for Product Image
+  const handleProductImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploadingProductImage(true);
+      const uploadedUrl = await api.uploadMedia(file, 'dindayal/products');
+      setNewImage(uploadedUrl);
+    } catch (err: any) {
+      alert(`Cloudinary Upload Error: ${err.message}`);
+    } finally {
+      setIsUploadingProductImage(false);
+    }
+  };
+
+  // Cloudinary Upload for Video Poster or Video Clip
+  const handleVideoMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: 'poster' | 'video') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploadingMedia(true);
+      const uploadedUrl = await api.uploadMedia(file, 'dindayal/media');
+      if (target === 'poster') {
+        setVideoPosterUrl(uploadedUrl);
+      } else {
+        setAmbientVideoUrl(uploadedUrl);
+      }
+    } catch (err: any) {
+      alert(`Upload Error: ${err.message}`);
+    } finally {
+      setIsUploadingMedia(false);
     }
   };
 
@@ -106,10 +144,10 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
             <span className="text-xl">⚙️</span>
             <div>
               <h2 className="font-serif font-bold text-lg leading-tight">
-                Dindayal Management & Video Portal
+                Dindayal Management & Media Portal
               </h2>
               <p className="text-xs text-[#EAD7B5]">
-                Configure Artisan Videos, Product Catalog & Wholesale Leads
+                Configure Cloudinary Media, Artisan Videos & Product Catalog
               </p>
             </div>
           </div>
@@ -162,7 +200,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       Artisan Loom & Weaving Video Settings
                     </h3>
                     <p className="text-xs text-[#7A756C]">
-                      Manage the video URL shown in the Artisan Modal and ambient backgrounds. Supports YouTube embeds & direct MP4 streams.
+                      Manage video URLs and upload posters directly to Cloudinary (CDN optimized).
                     </p>
                   </div>
                   {videoSaveSuccess && (
@@ -222,9 +260,21 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-[#8B6B38] mb-1">
-                      Ambient Background Video Stream (Direct MP4)
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold uppercase text-[#8B6B38]">
+                        Ambient Background Video Stream (Direct MP4)
+                      </label>
+                      <label className="text-[11px] text-[#1B3B2B] font-semibold flex items-center gap-1 cursor-pointer hover:underline">
+                        <Film size={13} />
+                        <span>Upload MP4 Clip</span>
+                        <input
+                          type="file"
+                          accept="video/*"
+                          className="hidden"
+                          onChange={(e) => handleVideoMediaUpload(e, 'video')}
+                        />
+                      </label>
+                    </div>
                     <input
                       type="text"
                       value={ambientVideoUrl}
@@ -235,9 +285,21 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-[#8B6B38] mb-1">
-                      Video Poster Image URL (Placeholder before playback)
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-xs font-bold uppercase text-[#8B6B38]">
+                        Video Poster Image URL (Placeholder before playback)
+                      </label>
+                      <label className="text-[11px] text-[#1B3B2B] font-semibold flex items-center gap-1 cursor-pointer hover:underline">
+                        <Upload size={13} />
+                        <span>Upload Poster</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleVideoMediaUpload(e, 'poster')}
+                        />
+                      </label>
+                    </div>
                     <input
                       type="text"
                       value={videoPosterUrl}
@@ -262,7 +324,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   <div className="pt-2">
                     <button
                       type="submit"
-                      disabled={isSavingVideo}
+                      disabled={isSavingVideo || isUploadingMedia}
                       className="flex items-center gap-2 bg-[#1B3B2B] text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-[#12271D] transition-colors shadow-sm"
                     >
                       <Save size={14} />
@@ -278,11 +340,17 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
           {activeTab === 'products' && (
             <div className="space-y-6">
               {/* Add New Product Form */}
-              <div className="bg-white p-5 rounded-2xl border border-[#E7DFD1] shadow-sm">
-                <h3 className="font-serif font-bold text-base text-[#1B3B2B] mb-3">
-                  Add New Jute Product to Store
-                </h3>
-                <form onSubmit={handleCreateProduct} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="bg-white p-6 rounded-2xl border border-[#E7DFD1] shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-serif font-bold text-base text-[#1B3B2B]">
+                    Add New Jute Product to Store
+                  </h3>
+                  <span className="text-[11px] font-bold text-[#8B6B38] bg-[#FAF7F2] border border-[#E7DFD1] px-2.5 py-1 rounded-full">
+                    ☁️ Cloudinary Auto-Compression Active
+                  </span>
+                </div>
+
+                <form onSubmit={handleCreateProduct} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Product Title *</label>
                     <input
@@ -354,14 +422,62 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     />
                   </div>
 
+                  {/* Cloudinary Image Uploader Field */}
+                  <div className="sm:col-span-3 bg-[#FAF7F2] p-4 rounded-xl border border-[#E7DFD1]">
+                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-2 uppercase tracking-wider">
+                      Product Photo (Cloudinary CDN Direct Upload)
+                    </label>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                      {/* Live Thumbnail Preview */}
+                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-white border border-[#E7DFD1] flex-shrink-0 flex items-center justify-center">
+                        {isUploadingProductImage ? (
+                          <Loader2 size={24} className="text-[#1B3B2B] animate-spin" />
+                        ) : newImage ? (
+                          <img src={newImage} alt="Preview" className="w-full h-full object-cover" />
+                        ) : (
+                          <Image size={24} className="text-[#A29C91]" />
+                        )}
+                      </div>
+
+                      {/* File input button & URL */}
+                      <div className="flex-1 w-full space-y-2">
+                        <div className="flex items-center gap-3">
+                          <label className="flex items-center gap-2 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors shadow-sm">
+                            <Upload size={14} />
+                            <span>{isUploadingProductImage ? 'Uploading...' : 'Choose File to Upload'}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              disabled={isUploadingProductImage}
+                              className="hidden"
+                              onChange={handleProductImageUpload}
+                            />
+                          </label>
+                          <span className="text-[11px] text-[#7A756C]">
+                            Auto-optimizes to WebP/AVIF • Direct Cloudinary CDN
+                          </span>
+                        </div>
+
+                        <input
+                          type="text"
+                          value={newImage}
+                          onChange={(e) => setNewImage(e.target.value)}
+                          placeholder="Or paste an image URL"
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="sm:col-span-3 flex justify-end pt-2">
                     <button
                       type="submit"
-                      disabled={isAddingProduct}
-                      className="flex items-center gap-1.5 bg-[#1B3B2B] text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-[#12271D]"
+                      disabled={isAddingProduct || isUploadingProductImage}
+                      className="flex items-center gap-1.5 bg-[#1B3B2B] text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-[#12271D] shadow-sm"
                     >
                       <Plus size={14} />
-                      <span>{isAddingProduct ? 'Adding...' : 'Add Product'}</span>
+                      <span>{isAddingProduct ? 'Adding...' : 'Add Product to Catalog'}</span>
                     </button>
                   </div>
                 </form>
@@ -416,4 +532,3 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     </div>
   );
 };
-

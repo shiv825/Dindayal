@@ -9,8 +9,12 @@ import {
 import { getSettings, updateSettings } from '../controllers/settingsController';
 import { createInquiry, getInquiries } from '../controllers/inquiryController';
 import { createOrder, getOrders } from '../controllers/orderController';
+import { uploadMiddleware, uploadMedia } from '../controllers/uploadController';
 
 const router = Router();
+
+// Media Upload (Cloudinary)
+router.post('/upload', uploadMiddleware.single('file'), uploadMedia);
 
 // Products
 router.get('/products', getProducts);
