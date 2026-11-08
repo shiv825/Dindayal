@@ -215,6 +215,20 @@ export const api = {
     return data.data;
   },
 
+  async updateProduct(id: string, updates: Partial<Product>): Promise<Product> {
+    const res = await fetch(`${API_BASE}/products/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Failed to update product');
+    }
+    const data = await res.json();
+    return data.data;
+  },
+
   async deleteProduct(id: string): Promise<boolean> {
     const res = await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
     return res.ok;

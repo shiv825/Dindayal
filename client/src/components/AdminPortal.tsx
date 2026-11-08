@@ -9,19 +9,12 @@ import {
   RefreshCw,
   Upload,
   Image as ImageIcon,
-  Film,
   Loader2,
   Search,
-  Sparkles,
   ArrowLeft,
-  ExternalLink,
-  Layers,
-  Ruler,
-  Tag,
   CheckCircle2,
-  Sliders,
-  DollarSign,
   CloudLightning,
+  Edit3,
 } from 'lucide-react';
 import { Product, SiteSettings } from '../types';
 import { api } from '../lib/api';
@@ -72,6 +65,22 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [isUploadingProductImage, setIsUploadingProductImage] = useState(false);
   const [productAddSuccess, setProductAddSuccess] = useState(false);
 
+  // Edit Product Modal State
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editTitle, setEditTitle] = useState('');
+  const [editCategory, setEditCategory] = useState<'floor_mats' | 'dining' | 'planters' | 'bags' | 'decor'>('floor_mats');
+  const [editPrice, setEditPrice] = useState<number | ''>('');
+  const [editMrp, setEditMrp] = useState<number | ''>('');
+  const [editDimensions, setEditDimensions] = useState('');
+  const [editWeave, setEditWeave] = useState('');
+  const [editImage, setEditImage] = useState('');
+  const [editStock, setEditStock] = useState<number>(50);
+  const [editBadge, setEditBadge] = useState('');
+  const [editTag, setEditTag] = useState('');
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
+  const [isUploadingEditImage, setIsUploadingEditImage] = useState(false);
+  const [editSuccessMessage, setEditSuccessMessage] = useState('');
+
   if (!isOpen) return null;
 
   // Preset dimension chips for 1-click convenience
@@ -93,6 +102,71 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     'Laminated Jute Fabric (14x15 Weave)',
     'Hand-Knotted Fringe Macrame',
   ];
+
+  // Open Edit Modal and prefill product data
+  const handleStartEdit = (product: Product) => {
+    setEditingProduct(product);
+    setEditTitle(product.title);
+    setEditCategory((product.category as any) || 'floor_mats');
+    setEditPrice(product.price_inr);
+    setEditMrp(product.mrp_inr);
+    setEditDimensions(product.dimensions || '');
+    setEditWeave(product.braid_weave_type || '');
+    setEditImage(product.image_url);
+    setEditStock(product.stock_qty || 50);
+    setEditBadge(product.badge || '');
+    setEditTag(product.tag || '');
+    setEditSuccessMessage('');
+  };
+
+  // Cloudinary Upload for Edit Modal
+  const handleEditImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setIsUploadingEditImage(true);
+      const uploadedUrl = await api.uploadMedia(file, 'dindayal/products');
+      setEditImage(uploadedUrl);
+    } catch (err: any) {
+      alert(`Cloudinary Upload Error: ${err.message}`);
+    } finally {
+      setIsUploadingEditImage(false);
+    }
+  };
+
+  // Submit Product Updates
+  const handleSaveEditProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct || !editTitle || !editPrice) return;
+
+    try {
+      setIsSavingEdit(true);
+      await api.updateProduct(editingProduct.id, {
+        title: editTitle,
+        category: editCategory,
+        price_inr: Number(editPrice),
+        mrp_inr: Number(editMrp) || Number(editPrice),
+        dimensions: editDimensions,
+        braid_weave_type: editWeave,
+        image_url: editImage,
+        stock_qty: editStock,
+        badge: editBadge,
+        tag: editTag,
+      });
+
+      setEditSuccessMessage('Product updated successfully!');
+      onRefreshProducts();
+      setTimeout(() => {
+        setEditingProduct(null);
+        setEditSuccessMessage('');
+      }, 1200);
+    } catch (err: any) {
+      alert(`Failed to update product: ${err.message}`);
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
 
   // Cloudinary Upload for Product Image
   const handleProductImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -213,7 +287,8 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   // Filter products in catalog view
   const filteredCatalog = products.filter((p) => {
     const matchCat = catalogCategory === 'all' || p.category === catalogCategory;
-    const matchSearch = p.title.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+    const matchSearch =
+      p.title.toLowerCase().includes(catalogSearch.toLowerCase()) ||
       p.category.toLowerCase().includes(catalogSearch.toLowerCase());
     return matchCat && matchSearch;
   });
@@ -331,7 +406,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         </div>
 
         {/* ========================================================= */}
-        {/* TAB 1: PRODUCT CATALOG MANAGER */}
+        {/* TAB 1: PRODUCT CATALOG MANAGER (WITH EDIT & DELETE) */}
         {/* ========================================================= */}
         {activeTab === 'catalog' && (
           <div className="space-y-4">
@@ -427,7 +502,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-[#FAF7F2] flex items-center justify-between">
+                    <div className="pt-3 border-t border-[#FAF7F2] flex items-center justify-between">
                       <div>
                         <span className="font-serif font-bold text-base text-[#1B3B2B]">
                           ₹{product.price_inr}
@@ -439,14 +514,26 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                         )}
                       </div>
 
-                      <button
-                        onClick={() => handleDeleteProduct(product.id, product.title)}
-                        className="flex items-center gap-1 text-xs text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition-colors"
-                        title="Delete this product"
-                      >
-                        <Trash2 size={13} />
-                        <span>Delete</span>
-                      </button>
+                      {/* Action buttons: EDIT & DELETE */}
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleStartEdit(product)}
+                          className="flex items-center gap-1 text-xs text-[#1B3B2B] hover:text-[#12271D] bg-[#FAF7F2] hover:bg-[#EAE2D5] border border-[#E7DFD1] px-3 py-1.5 rounded-lg transition-colors font-bold"
+                          title="Edit this product"
+                        >
+                          <Edit3 size={13} />
+                          <span>Edit</span>
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteProduct(product.id, product.title)}
+                          className="flex items-center gap-1 text-xs text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 border border-red-100 px-2.5 py-1.5 rounded-lg transition-colors font-semibold"
+                          title="Delete this product"
+                        >
+                          <Trash2 size={13} />
+                          <span>Delete</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -460,6 +547,238 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                 <p className="text-xs text-[#7A756C] mt-0.5">Try searching another keyword or clear filters.</p>
               </div>
             )}
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* EDIT PRODUCT MODAL (SUPER CONVENIENT & INSTANT LIVE SAVE) */}
+        {/* ========================================================= */}
+        {editingProduct && (
+          <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+            <div className="relative w-full max-w-2xl bg-white rounded-3xl border border-[#E7DFD1] shadow-2xl overflow-hidden p-6 sm:p-8 space-y-5 my-8">
+              
+              <div className="flex items-center justify-between border-b border-[#E7DFD1] pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF7F2] text-[#1B3B2B] flex items-center justify-center font-bold">
+                    <Edit3 size={16} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-lg text-[#1B3B2B]">
+                      Edit Product Details
+                    </h3>
+                    <p className="text-[11px] text-[#7A756C]">
+                      Updates apply instantly to your live store and database.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setEditingProduct(null)}
+                  className="w-8 h-8 rounded-full bg-[#FAF7F2] hover:bg-[#EAE2D5] text-[#1B3B2B] flex items-center justify-center transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {editSuccessMessage && (
+                <div className="bg-green-50 border border-green-200 text-green-800 text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2">
+                  <Check size={16} />
+                  <span>{editSuccessMessage}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleSaveEditProduct} className="space-y-4">
+                
+                {/* Photo Editor */}
+                <div>
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-[#8B6B38] mb-1.5">
+                    Product Photo (Cloudinary CDN)
+                  </label>
+                  <div className="flex items-center gap-3 bg-[#FAF7F2] p-3 rounded-2xl border border-[#E7DFD1]">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#E7DFD1] flex-shrink-0 flex items-center justify-center">
+                      {isUploadingEditImage ? (
+                        <Loader2 size={18} className="text-[#1B3B2B] animate-spin" />
+                      ) : (
+                        <img src={editImage} alt="Preview" className="w-full h-full object-cover" />
+                      )}
+                    </div>
+
+                    <div className="flex-1 space-y-1.5">
+                      <label className="inline-flex items-center gap-1.5 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors shadow-sm">
+                        <Upload size={12} />
+                        <span>{isUploadingEditImage ? 'Uploading...' : 'Upload New Photo'}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={isUploadingEditImage}
+                          className="hidden"
+                          onChange={handleEditImageUpload}
+                        />
+                      </label>
+                      <input
+                        type="text"
+                        value={editImage}
+                        onChange={(e) => setEditImage(e.target.value)}
+                        className="w-full px-2.5 py-1 text-xs rounded-lg bg-white border border-[#E7DFD1]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Title & Category */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Product Title *</label>
+                    <input
+                      type="text"
+                      required
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Category</label>
+                    <select
+                      value={editCategory}
+                      onChange={(e) => setEditCategory(e.target.value as any)}
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] font-semibold text-[#1B3B2B]"
+                    >
+                      <option value="floor_mats">🛋️ Floor Mats & Rugs</option>
+                      <option value="dining">🍽️ Dining Sets & Placemats</option>
+                      <option value="planters">🪴 Planter Baskets</option>
+                      <option value="bags">👜 Totes & Bags</option>
+                      <option value="decor">🎨 Wall Decor</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Pricing & Stock */}
+                <div className="grid grid-cols-3 gap-3 bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#E7DFD1]">
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#8B6B38] mb-1">Selling Price (₹) *</label>
+                    <input
+                      type="number"
+                      required
+                      value={editPrice}
+                      onChange={(e) => setEditPrice(e.target.value ? Number(e.target.value) : '')}
+                      className="w-full px-3 py-1.5 text-xs font-bold rounded-xl bg-white border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#8B6B38] mb-1">MRP Price (₹)</label>
+                    <input
+                      type="number"
+                      value={editMrp}
+                      onChange={(e) => setEditMrp(e.target.value ? Number(e.target.value) : '')}
+                      className="w-full px-3 py-1.5 text-xs font-bold rounded-xl bg-white border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-[#8B6B38] mb-1">Stock Quantity</label>
+                    <input
+                      type="number"
+                      value={editStock}
+                      onChange={(e) => setEditStock(Number(e.target.value))}
+                      className="w-full px-3 py-1.5 text-xs font-bold rounded-xl bg-white border border-[#E7DFD1]"
+                    />
+                  </div>
+                </div>
+
+                {/* Dimensions with Presets */}
+                <div>
+                  <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Dimensions</label>
+                  <div className="flex flex-wrap gap-1 mb-1.5">
+                    {dimensionPresets.slice(0, 4).map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setEditDimensions(p)}
+                        className="text-[10px] px-2 py-0.5 rounded bg-[#FAF7F2] border border-[#E7DFD1] hover:bg-[#EAE2D5]"
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    value={editDimensions}
+                    onChange={(e) => setEditDimensions(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                  />
+                </div>
+
+                {/* Weave Type with Presets */}
+                <div>
+                  <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Weave Technique</label>
+                  <div className="flex flex-wrap gap-1 mb-1.5">
+                    {weavePresets.slice(0, 4).map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setEditWeave(p)}
+                        className="text-[10px] px-2 py-0.5 rounded bg-[#FAF7F2] border border-[#E7DFD1] hover:bg-[#EAE2D5]"
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    value={editWeave}
+                    onChange={(e) => setEditWeave(e.target.value)}
+                    className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                  />
+                </div>
+
+                {/* Badge & Tag */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Badge (e.g. ⭐ Bestseller)</label>
+                    <input
+                      type="text"
+                      value={editBadge}
+                      onChange={(e) => setEditBadge(e.target.value)}
+                      placeholder="⭐ Bestseller, 🔥 Trending"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Tag (Subtitle)</label>
+                    <input
+                      type="text"
+                      value={editTag}
+                      onChange={(e) => setEditTag(e.target.value)}
+                      placeholder="Living Room Centerpiece"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E7DFD1]">
+                  <button
+                    type="button"
+                    onClick={() => setEditingProduct(null)}
+                    className="px-4 py-2 text-xs font-semibold rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] text-[#4A4740] hover:bg-[#EAE2D5]"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSavingEdit || isUploadingEditImage}
+                    className="flex items-center gap-1.5 px-6 py-2.5 text-xs font-bold rounded-xl bg-[#1B3B2B] text-white hover:bg-[#12271D] transition-colors shadow-sm"
+                  >
+                    <Check size={14} />
+                    <span>{isSavingEdit ? 'Saving...' : 'Save Changes Live'}</span>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
 

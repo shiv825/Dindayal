@@ -104,6 +104,8 @@ export const updateProduct = async (req: Request, res: Response) => {
       braid_weave_type,
       image_url,
       stock_qty,
+      tag,
+      badge,
     } = req.body;
 
     const result = await pool.query(
@@ -116,10 +118,12 @@ export const updateProduct = async (req: Request, res: Response) => {
         braid_weave_type = COALESCE($6, braid_weave_type),
         image_url = COALESCE($7, image_url),
         stock_qty = COALESCE($8, stock_qty),
+        tag = COALESCE($9, tag),
+        badge = COALESCE($10, badge),
         updated_at = now()
-      WHERE id = $9
+      WHERE id = $11
       RETURNING *`,
-      [title, category, price_inr, mrp_inr, dimensions, braid_weave_type, image_url, stock_qty, id]
+      [title, category, price_inr, mrp_inr, dimensions, braid_weave_type, image_url, stock_qty, tag, badge, id]
     );
 
     if (result.rows.length === 0) {
