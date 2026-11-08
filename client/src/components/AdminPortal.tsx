@@ -1,5 +1,28 @@
 import React, { useState } from 'react';
-import { X, Video, Package, Save, Plus, Trash2, Check, RefreshCw, Upload, Image, Film, Loader2 } from 'lucide-react';
+import {
+  X,
+  Video,
+  Package,
+  Plus,
+  Trash2,
+  Check,
+  RefreshCw,
+  Upload,
+  Image as ImageIcon,
+  Film,
+  Loader2,
+  Search,
+  Sparkles,
+  ArrowLeft,
+  ExternalLink,
+  Layers,
+  Ruler,
+  Tag,
+  CheckCircle2,
+  Sliders,
+  DollarSign,
+  CloudLightning,
+} from 'lucide-react';
 import { Product, SiteSettings } from '../types';
 import { api } from '../lib/api';
 
@@ -20,9 +43,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   products,
   onRefreshProducts,
 }) => {
-  const [activeTab, setActiveTab] = useState<'video' | 'products'>('video');
-  
-  // Video settings local state
+  const [activeTab, setActiveTab] = useState<'catalog' | 'add_product' | 'video_studio'>('catalog');
+
+  // Search & Filter in Catalog
+  const [catalogSearch, setCatalogSearch] = useState('');
+  const [catalogCategory, setCatalogCategory] = useState<string>('all');
+
+  // Video studio settings state
   const [ambientVideoUrl, setAmbientVideoUrl] = useState(settings.ambient_video_url);
   const [docVideoUrl, setDocVideoUrl] = useState(settings.documentary_video_url);
   const [videoPosterUrl, setVideoPosterUrl] = useState(settings.video_poster_url);
@@ -31,29 +58,41 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   const [videoSaveSuccess, setVideoSaveSuccess] = useState(false);
   const [isUploadingMedia, setIsUploadingMedia] = useState(false);
 
-  // New Product Modal State
+  // New Product Form State
   const [newTitle, setNewTitle] = useState('');
-  const [newCategory, setNewCategory] = useState<'floor_mats' | 'dining' | 'planters' | 'bags' | 'ropes' | 'decor'>('floor_mats');
-  const [newPrice, setNewPrice] = useState(999);
-  const [newMrp, setNewMrp] = useState(1499);
-  const [newDimensions, setNewDimensions] = useState('');
-  const [newWeave, setNewWeave] = useState('');
+  const [newCategory, setNewCategory] = useState<'floor_mats' | 'dining' | 'planters' | 'bags' | 'decor'>('floor_mats');
+  const [newPrice, setNewPrice] = useState<number | ''>(1299);
+  const [newMrp, setNewMrp] = useState<number | ''>(1999);
+  const [newDimensions, setNewDimensions] = useState('4.0 Ft Diameter (120 cm)');
+  const [newWeave, setNewWeave] = useState('Heavy Hand-Braided Spiral Weave');
   const [newImage, setNewImage] = useState('/assets/images/jute_floor_mat.jpg');
+  const [newTag, setNewTag] = useState('Handcrafted Artisan Mat');
+  const [newBadge, setNewBadge] = useState('⭐ New Arrival');
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [isUploadingProductImage, setIsUploadingProductImage] = useState(false);
+  const [productAddSuccess, setProductAddSuccess] = useState(false);
 
   if (!isOpen) return null;
 
-  // Preset videos
-  const handleApplyPreset = (type: string) => {
-    if (type === 'youtube_weaving') {
-      setDocVideoUrl('https://www.youtube.com/embed/BHbDLSXmtBA');
-    } else if (type === 'youtube_braiding') {
-      setDocVideoUrl('https://www.youtube.com/embed/5qap5aO4i9A');
-    } else if (type === 'mp4_craft') {
-      setAmbientVideoUrl('https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-weaving-a-basket-43845-large.mp4');
-    }
-  };
+  // Preset dimension chips for 1-click convenience
+  const dimensionPresets = [
+    '4.0 Ft Diameter (120 cm)',
+    '45 x 75 cm (18 x 30 in)',
+    '6 Placemats + 1 Runner',
+    '10" Height x 10" Dia',
+    '16" x 14" x 6" inches',
+    '60 cm Width x 80 cm Drop',
+  ];
+
+  // Preset weave chips for 1-click convenience
+  const weavePresets = [
+    'Heavy Hand-Braided Spiral Weave',
+    'High-Tension Ribbed Coir-Jute Blend',
+    'Fine Thread Braided Natural Gold',
+    'Dual-Tone Rope Weave with Liner',
+    'Laminated Jute Fabric (14x15 Weave)',
+    'Hand-Knotted Fringe Macrame',
+  ];
 
   // Cloudinary Upload for Product Image
   const handleProductImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +110,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     }
   };
 
-  // Cloudinary Upload for Video Poster or Video Clip
+  // Cloudinary Upload for Video Poster or Clip
   const handleVideoMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: 'poster' | 'video') => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -91,12 +130,32 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     }
   };
 
+  // Convert raw YouTube URL to embed format automatically
+  const formatYouTubeUrl = (url: string) => {
+    if (url.includes('/embed/')) return url;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+  };
+
+  const handleApplyVideoPreset = (type: string) => {
+    if (type === 'bengal_loom') {
+      setDocVideoUrl('https://www.youtube.com/embed/BHbDLSXmtBA');
+    } else if (type === 'braiding_craft') {
+      setDocVideoUrl('https://www.youtube.com/embed/5qap5aO4i9A');
+    } else if (type === 'fast_mp4') {
+      setAmbientVideoUrl('https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-weaving-a-basket-43845-large.mp4');
+    }
+  };
+
   const handleSaveVideoSettings = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSavingVideo(true);
+    const cleanedUrl = formatYouTubeUrl(docVideoUrl);
+    setDocVideoUrl(cleanedUrl);
+
     const updated = await api.updateSettings({
       ambient_video_url: ambientVideoUrl,
-      documentary_video_url: docVideoUrl,
+      documentary_video_url: cleanedUrl,
       video_poster_url: videoPosterUrl,
       announcement_text: announcementText,
     });
@@ -108,427 +167,671 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle) return;
+    if (!newTitle || !newPrice) {
+      alert('Please provide a product title and price.');
+      return;
+    }
+
     setIsAddingProduct(true);
-    await api.createProduct({
-      title: newTitle,
-      category: newCategory,
-      price_inr: newPrice,
-      mrp_inr: newMrp,
-      dimensions: newDimensions,
-      braid_weave_type: newWeave,
-      image_url: newImage,
-      stock_qty: 50,
-      is_featured: true,
-      is_bestseller: false,
-    });
-    setNewTitle('');
-    setIsAddingProduct(false);
-    onRefreshProducts();
+    try {
+      await api.createProduct({
+        title: newTitle,
+        category: newCategory,
+        price_inr: Number(newPrice),
+        mrp_inr: Number(newMrp) || Number(newPrice),
+        dimensions: newDimensions,
+        braid_weave_type: newWeave,
+        image_url: newImage,
+        tag: newTag,
+        badge: newBadge,
+        stock_qty: 50,
+        is_featured: true,
+        is_bestseller: false,
+      });
+
+      setProductAddSuccess(true);
+      onRefreshProducts();
+      setTimeout(() => {
+        setProductAddSuccess(false);
+        setActiveTab('catalog');
+        setNewTitle('');
+      }, 1500);
+    } catch (err: any) {
+      alert(`Error adding product: ${err.message}`);
+    } finally {
+      setIsAddingProduct(false);
+    }
   };
 
-  const handleDeleteProduct = async (id: string) => {
-    if (confirm('Are you sure you want to delete this product?')) {
+  const handleDeleteProduct = async (id: string, title: string) => {
+    if (confirm(`Are you sure you want to delete "${title}"?`)) {
       await api.deleteProduct(id);
       onRefreshProducts();
     }
   };
 
+  // Filter products in catalog view
+  const filteredCatalog = products.filter((p) => {
+    const matchCat = catalogCategory === 'all' || p.category === catalogCategory;
+    const matchSearch = p.title.toLowerCase().includes(catalogSearch.toLowerCase()) ||
+      p.category.toLowerCase().includes(catalogSearch.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-      <div className="relative w-full max-w-5xl bg-[#FAF7F2] rounded-3xl border border-[#E7DFD1] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#F4EFE6] text-[#24221E] flex flex-col animate-fadeIn">
+      {/* Top Navbar */}
+      <header className="sticky top-0 z-40 bg-[#1B3B2B] text-white px-4 sm:px-8 py-3.5 shadow-md flex items-center justify-between border-b border-[#28533E]">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-[#D8A856] text-[#1B3B2B] flex items-center justify-center font-bold text-lg shadow-sm">
+            🌿
+          </div>
+          <div>
+            <h1 className="font-serif font-bold text-base sm:text-lg leading-tight">
+              Dindayal Admin Studio
+            </h1>
+            <p className="text-[10px] text-[#EAD7B5] tracking-wide">
+              Storefront Control, Cloudinary CDN & Artisan Loom Studio
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={onClose}
+          className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border border-white/20"
+        >
+          <ArrowLeft size={14} />
+          <span>Back to Storefront</span>
+        </button>
+      </header>
+
+      {/* Main Admin Body */}
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#1B3B2B] text-white">
-          <div className="flex items-center gap-3">
-            <span className="text-xl">⚙️</span>
+        {/* Quick Metrics Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E7DFD1] shadow-sm flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FAF7F2] text-[#1B3B2B] flex items-center justify-center font-bold border border-[#E7DFD1]">
+              <Package size={20} />
+            </div>
             <div>
-              <h2 className="font-serif font-bold text-lg leading-tight">
-                Dindayal Management & Media Portal
-              </h2>
-              <p className="text-xs text-[#EAD7B5]">
-                Configure Cloudinary Media, Artisan Videos & Product Catalog
-              </p>
+              <p className="text-[11px] text-[#7A756C] uppercase font-bold">Live Products</p>
+              <p className="font-serif font-bold text-lg text-[#1B3B2B]">{products.length} Items</p>
             </div>
           </div>
 
+          <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E7DFD1] shadow-sm flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FAF7F2] text-[#D8A856] flex items-center justify-center font-bold border border-[#E7DFD1]">
+              <CloudLightning size={20} />
+            </div>
+            <div>
+              <p className="text-[11px] text-[#7A756C] uppercase font-bold">Cloudinary Media</p>
+              <p className="font-serif font-bold text-sm text-[#1B3B2B] truncate">Connected (fj2pbcqf)</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E7DFD1] shadow-sm flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FAF7F2] text-[#25D366] flex items-center justify-center font-bold border border-[#E7DFD1]">
+              <Video size={20} />
+            </div>
+            <div>
+              <p className="text-[11px] text-[#7A756C] uppercase font-bold">Artisan Reel</p>
+              <p className="font-serif font-bold text-sm text-[#1B3B2B]">YouTube Active</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-[#E7DFD1] shadow-sm flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FAF7F2] text-[#8B6B38] flex items-center justify-center font-bold border border-[#E7DFD1]">
+              <CheckCircle2 size={20} />
+            </div>
+            <div>
+              <p className="text-[11px] text-[#7A756C] uppercase font-bold">Supabase DB</p>
+              <p className="font-serif font-bold text-sm text-[#1B3B2B]">PostgreSQL Live</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab Switcher Pills */}
+        <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-[#E7DFD1] shadow-sm overflow-x-auto scrollbar-none">
           <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+            onClick={() => setActiveTab('catalog')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              activeTab === 'catalog'
+                ? 'bg-[#1B3B2B] text-white shadow-sm'
+                : 'text-[#4A4740] hover:bg-[#F4EFE6]'
+            }`}
           >
-            <X size={16} />
+            <Package size={15} />
+            <span>Manage Products ({products.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('add_product')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              activeTab === 'add_product'
+                ? 'bg-[#1B3B2B] text-white shadow-sm'
+                : 'text-[#4A4740] hover:bg-[#F4EFE6]'
+            }`}
+          >
+            <Plus size={15} />
+            <span>Add New Product</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('video_studio')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              activeTab === 'video_studio'
+                ? 'bg-[#1B3B2B] text-white shadow-sm'
+                : 'text-[#4A4740] hover:bg-[#F4EFE6]'
+            }`}
+          >
+            <Video size={15} />
+            <span>Artisan Loom & Video Studio</span>
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex border-b border-[#E7DFD1] bg-white px-6">
-          <button
-            onClick={() => setActiveTab('video')}
-            className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-all ${
-              activeTab === 'video'
-                ? 'border-[#1B3B2B] text-[#1B3B2B]'
-                : 'border-transparent text-[#7A756C] hover:text-[#1B3B2B]'
-            }`}
-          >
-            <Video size={14} />
-            <span>Artisan Loom & Video Settings</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('products')}
-            className={`flex items-center gap-2 py-3 px-4 text-xs font-bold border-b-2 transition-all ${
-              activeTab === 'products'
-                ? 'border-[#1B3B2B] text-[#1B3B2B]'
-                : 'border-transparent text-[#7A756C] hover:text-[#1B3B2B]'
-            }`}
-          >
-            <Package size={14} />
-            <span>Catalog Manager ({products.length})</span>
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-[#FAF7F2]">
-          
-          {/* TAB 1: VIDEO SETTINGS */}
-          {activeTab === 'video' && (
-            <div className="max-w-3xl mx-auto space-y-6">
-              <div className="bg-white p-6 rounded-2xl border border-[#E7DFD1] shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="font-serif font-bold text-base text-[#1B3B2B]">
-                      Artisan Loom & Weaving Video Settings
-                    </h3>
-                    <p className="text-xs text-[#7A756C]">
-                      Manage video URLs and upload posters directly to Cloudinary (CDN optimized).
-                    </p>
-                  </div>
-                  {videoSaveSuccess && (
-                    <span className="flex items-center gap-1 text-xs font-bold text-green-700 bg-green-50 px-3 py-1 rounded-full border border-green-200">
-                      <Check size={14} />
-                      Saved Live!
-                    </span>
-                  )}
+        {/* ========================================================= */}
+        {/* TAB 1: PRODUCT CATALOG MANAGER */}
+        {/* ========================================================= */}
+        {activeTab === 'catalog' && (
+          <div className="space-y-4">
+            {/* Search and Action Bar */}
+            <div className="bg-white p-4 rounded-2xl border border-[#E7DFD1] shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1">
+                {/* Search */}
+                <div className="relative flex-1 sm:max-w-xs">
+                  <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#A29C91]" />
+                  <input
+                    type="text"
+                    placeholder="Search by title or category..."
+                    value={catalogSearch}
+                    onChange={(e) => setCatalogSearch(e.target.value)}
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                  />
                 </div>
 
-                {/* Quick Presets */}
-                <div className="mb-5 p-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]">
-                  <span className="text-[11px] font-bold uppercase text-[#8B6B38] block mb-2">
-                    Quick Reliable Presets:
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleApplyPreset('youtube_weaving')}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-white border border-[#E7DFD1] text-[#1B3B2B] hover:bg-[#F4EFE6] font-medium"
-                    >
-                      ▶ Bengal Jute Weaving (YouTube)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleApplyPreset('youtube_braiding')}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-white border border-[#E7DFD1] text-[#1B3B2B] hover:bg-[#F4EFE6] font-medium"
-                    >
-                      ▶ Hand Braiding Technique (YouTube)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleApplyPreset('mp4_craft')}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-white border border-[#E7DFD1] text-[#1B3B2B] hover:bg-[#F4EFE6] font-medium"
-                    >
-                      ▶ Fast CDN Basket MP4
-                    </button>
-                  </div>
-                </div>
+                {/* Filter */}
+                <select
+                  value={catalogCategory}
+                  onChange={(e) => setCatalogCategory(e.target.value)}
+                  className="text-xs py-2 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] text-[#4A4740] focus:outline-none focus:border-[#D8A856] cursor-pointer"
+                >
+                  <option value="all">All Categories</option>
+                  <option value="floor_mats">Floor Mats & Rugs</option>
+                  <option value="dining">Dining Sets</option>
+                  <option value="planters">Planters</option>
+                  <option value="bags">Bags & Totes</option>
+                  <option value="decor">Wall Decor</option>
+                </select>
+              </div>
 
-                <form onSubmit={handleSaveVideoSettings} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold uppercase text-[#8B6B38] mb-1">
-                      Documentary / Modal Video URL (YouTube or MP4) *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={docVideoUrl}
-                      onChange={(e) => setDocVideoUrl(e.target.value)}
-                      placeholder="https://www.youtube.com/embed/BHbDLSXmtBA"
-                      className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
-                    />
-                    <p className="text-[11px] text-[#7A756C] mt-1">
-                      Tip: You can use full YouTube URLs (e.g. https://www.youtube.com/watch?v=...) or embed URLs.
-                    </p>
-                  </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={onRefreshProducts}
+                  className="flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl border border-[#E7DFD1] bg-[#FAF7F2] hover:bg-[#EAE2D5] text-[#1B3B2B] transition-colors"
+                >
+                  <RefreshCw size={13} />
+                  <span>Refresh</span>
+                </button>
 
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-bold uppercase text-[#8B6B38]">
-                        Ambient Background Video Stream (Direct MP4)
-                      </label>
-                      <label className="text-[11px] text-[#1B3B2B] font-semibold flex items-center gap-1 cursor-pointer hover:underline">
-                        <Film size={13} />
-                        <span>Upload MP4 Clip</span>
-                        <input
-                          type="file"
-                          accept="video/*"
-                          className="hidden"
-                          onChange={(e) => handleVideoMediaUpload(e, 'video')}
-                        />
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      value={ambientVideoUrl}
-                      onChange={(e) => setAmbientVideoUrl(e.target.value)}
-                      placeholder="https://...mp4"
-                      className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-bold uppercase text-[#8B6B38]">
-                        Video Poster Image URL (Placeholder before playback)
-                      </label>
-                      <label className="text-[11px] text-[#1B3B2B] font-semibold flex items-center gap-1 cursor-pointer hover:underline">
-                        <Upload size={13} />
-                        <span>Upload Poster</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => handleVideoMediaUpload(e, 'poster')}
-                        />
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      value={videoPosterUrl}
-                      onChange={(e) => setVideoPosterUrl(e.target.value)}
-                      placeholder="/assets/images/jute_floor_mat.jpg"
-                      className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase text-[#8B6B38] mb-1">
-                      Top Announcement Bar Text
-                    </label>
-                    <input
-                      type="text"
-                      value={announcementText}
-                      onChange={(e) => setAnnouncementText(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
-                    />
-                  </div>
-
-                  <div className="pt-2">
-                    <button
-                      type="submit"
-                      disabled={isSavingVideo || isUploadingMedia}
-                      className="flex items-center gap-2 bg-[#1B3B2B] text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-[#12271D] transition-colors shadow-sm"
-                    >
-                      <Save size={14} />
-                      <span>{isSavingVideo ? 'Saving...' : 'Save Settings to DB & Store'}</span>
-                    </button>
-                  </div>
-                </form>
+                <button
+                  onClick={() => setActiveTab('add_product')}
+                  className="flex items-center gap-1.5 text-xs font-bold px-4 py-2 rounded-xl bg-[#1B3B2B] text-white hover:bg-[#12271D] transition-colors shadow-sm"
+                >
+                  <Plus size={14} />
+                  <span>Add Product</span>
+                </button>
               </div>
             </div>
-          )}
 
-          {/* TAB 2: PRODUCT CATALOG CRUD */}
-          {activeTab === 'products' && (
-            <div className="space-y-6">
-              {/* Add New Product Form */}
-              <div className="bg-white p-6 rounded-2xl border border-[#E7DFD1] shadow-sm">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-serif font-bold text-base text-[#1B3B2B]">
-                    Add New Jute Product to Store
-                  </h3>
-                  <span className="text-[11px] font-bold text-[#8B6B38] bg-[#FAF7F2] border border-[#E7DFD1] px-2.5 py-1 rounded-full">
-                    ☁️ Cloudinary Auto-Compression Active
-                  </span>
-                </div>
-
-                <form onSubmit={handleCreateProduct} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Product Title *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. 5ft Spiral Jute Rug"
-                      value={newTitle}
-                      onChange={(e) => setNewTitle(e.target.value)}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Category *</label>
-                    <select
-                      value={newCategory}
-                      onChange={(e) => setNewCategory(e.target.value as any)}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
-                    >
-                      <option value="floor_mats">Floor Mats & Rugs</option>
-                      <option value="dining">Dining Sets</option>
-                      <option value="planters">Planters</option>
-                      <option value="bags">Bags & Totes</option>
-                      <option value="ropes">Ropes</option>
-                      <option value="decor">Wall Decor</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Selling Price (₹) *</label>
-                    <input
-                      type="number"
-                      required
-                      value={newPrice}
-                      onChange={(e) => setNewPrice(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">MRP Price (₹)</label>
-                    <input
-                      type="number"
-                      value={newMrp}
-                      onChange={(e) => setNewMrp(Number(e.target.value))}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Dimensions</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. 5.0 Ft Dia (150 cm)"
-                      value={newDimensions}
-                      onChange={(e) => setNewDimensions(e.target.value)}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-1">Weave Type</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. 3-Ply Hand Braided"
-                      value={newWeave}
-                      onChange={(e) => setNewWeave(e.target.value)}
-                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
-                    />
-                  </div>
-
-                  {/* Cloudinary Image Uploader Field */}
-                  <div className="sm:col-span-3 bg-[#FAF7F2] p-4 rounded-xl border border-[#E7DFD1]">
-                    <label className="block text-[11px] font-bold text-[#8B6B38] mb-2 uppercase tracking-wider">
-                      Product Photo (Cloudinary CDN Direct Upload)
-                    </label>
-
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                      {/* Live Thumbnail Preview */}
-                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-white border border-[#E7DFD1] flex-shrink-0 flex items-center justify-center">
-                        {isUploadingProductImage ? (
-                          <Loader2 size={24} className="text-[#1B3B2B] animate-spin" />
-                        ) : newImage ? (
-                          <img src={newImage} alt="Preview" className="w-full h-full object-cover" />
-                        ) : (
-                          <Image size={24} className="text-[#A29C91]" />
+            {/* Products Grid Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredCatalog.map((product) => {
+                const discount = Math.round(((product.mrp_inr - product.price_inr) / product.mrp_inr) * 100);
+                return (
+                  <div
+                    key={product.id}
+                    className="bg-white rounded-2xl border border-[#E7DFD1] p-4 flex flex-col justify-between shadow-sm hover:border-[#D8A856] transition-all"
+                  >
+                    <div>
+                      <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-[#FAF7F2] mb-3 border border-[#E7DFD1]">
+                        <img
+                          src={product.image_url}
+                          alt={product.title}
+                          className="w-full h-full object-cover"
+                        />
+                        {product.badge && (
+                          <span className="absolute top-2 left-2 bg-[#1B3B2B] text-white text-[9px] font-bold px-2 py-0.5 rounded">
+                            {product.badge}
+                          </span>
+                        )}
+                        {discount > 0 && (
+                          <span className="absolute top-2 right-2 bg-[#D8A856] text-[#1B3B2B] text-[9px] font-bold px-1.5 py-0.5 rounded">
+                            {discount}% OFF
+                          </span>
                         )}
                       </div>
 
-                      {/* File input button & URL */}
-                      <div className="flex-1 w-full space-y-2">
-                        <div className="flex items-center gap-3">
-                          <label className="flex items-center gap-2 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors shadow-sm">
-                            <Upload size={14} />
-                            <span>{isUploadingProductImage ? 'Uploading...' : 'Choose File to Upload'}</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              disabled={isUploadingProductImage}
-                              className="hidden"
-                              onChange={handleProductImageUpload}
-                            />
-                          </label>
-                          <span className="text-[11px] text-[#7A756C]">
-                            Auto-optimizes to WebP/AVIF • Direct Cloudinary CDN
-                          </span>
-                        </div>
+                      <div className="flex items-center justify-between text-[10px] text-[#8B6B38] font-bold uppercase mb-1">
+                        <span>{product.category.replace('_', ' ')}</span>
+                        <span>Stock: {product.stock_qty || 50} units</span>
+                      </div>
 
-                        <input
-                          type="text"
-                          value={newImage}
-                          onChange={(e) => setNewImage(e.target.value)}
-                          placeholder="Or paste an image URL"
-                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
-                        />
+                      <h3 className="font-serif font-bold text-sm text-[#1B3B2B] line-clamp-1 mb-1">
+                        {product.title}
+                      </h3>
+
+                      <div className="text-[11px] text-[#7A756C] space-y-0.5 mb-3">
+                        {product.dimensions && <p>📏 {product.dimensions}</p>}
+                        {product.braid_weave_type && <p>🧶 {product.braid_weave_type}</p>}
                       </div>
                     </div>
-                  </div>
 
-                  <div className="sm:col-span-3 flex justify-end pt-2">
-                    <button
-                      type="submit"
-                      disabled={isAddingProduct || isUploadingProductImage}
-                      className="flex items-center gap-1.5 bg-[#1B3B2B] text-white px-6 py-2.5 rounded-xl text-xs font-bold hover:bg-[#12271D] shadow-sm"
-                    >
-                      <Plus size={14} />
-                      <span>{isAddingProduct ? 'Adding...' : 'Add Product to Catalog'}</span>
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              {/* Product List Table */}
-              <div className="bg-white rounded-2xl border border-[#E7DFD1] overflow-hidden shadow-sm">
-                <div className="p-4 border-b border-[#E7DFD1] flex items-center justify-between">
-                  <h4 className="font-serif font-bold text-sm text-[#1B3B2B]">Live Store Catalog</h4>
-                  <button
-                    onClick={onRefreshProducts}
-                    className="flex items-center gap-1 text-xs text-[#8B6B38] hover:text-[#1B3B2B]"
-                  >
-                    <RefreshCw size={12} />
-                    <span>Refresh</span>
-                  </button>
-                </div>
-
-                <div className="divide-y divide-[#E7DFD1]">
-                  {products.map((p) => (
-                    <div key={p.id} className="p-4 flex items-center justify-between gap-4 hover:bg-[#FAF7F2]">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <img
-                          src={p.image_url}
-                          alt={p.title}
-                          className="w-12 h-12 rounded-lg object-cover bg-[#F4EFE6]"
-                        />
-                        <div className="min-w-0">
-                          <h5 className="font-bold text-xs text-[#1B3B2B] truncate">{p.title}</h5>
-                          <span className="text-[11px] text-[#7A756C]">
-                            Category: {p.category} • ₹{p.price_inr} (MRP: ₹{p.mrp_inr})
+                    <div className="pt-2 border-t border-[#FAF7F2] flex items-center justify-between">
+                      <div>
+                        <span className="font-serif font-bold text-base text-[#1B3B2B]">
+                          ₹{product.price_inr}
+                        </span>
+                        {product.mrp_inr > product.price_inr && (
+                          <span className="text-xs text-[#A29C91] line-through ml-1.5">
+                            ₹{product.mrp_inr}
                           </span>
-                        </div>
+                        )}
                       </div>
 
                       <button
-                        onClick={() => handleDeleteProduct(p.id)}
-                        className="text-[#A29C91] hover:text-red-600 p-2"
-                        title="Delete Product"
+                        onClick={() => handleDeleteProduct(product.id, product.title)}
+                        className="flex items-center gap-1 text-xs text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition-colors"
+                        title="Delete this product"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={13} />
+                        <span>Delete</span>
                       </button>
                     </div>
-                  ))}
+                  </div>
+                );
+              })}
+            </div>
+
+            {filteredCatalog.length === 0 && (
+              <div className="text-center py-12 bg-white rounded-2xl border border-[#E7DFD1] p-6">
+                <span className="text-3xl">🌾</span>
+                <p className="font-bold text-sm text-[#1B3B2B] mt-2">No matching products found</p>
+                <p className="text-xs text-[#7A756C] mt-0.5">Try searching another keyword or clear filters.</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 2: ADD NEW PRODUCT FORM (WITH PRESETS & CLOUDINARY) */}
+        {/* ========================================================= */}
+        {activeTab === 'add_product' && (
+          <div className="bg-white rounded-3xl border border-[#E7DFD1] p-5 sm:p-8 shadow-sm max-w-4xl mx-auto space-y-6">
+            <div className="flex items-center justify-between border-b border-[#E7DFD1] pb-4">
+              <div>
+                <h2 className="font-serif font-bold text-xl text-[#1B3B2B]">
+                  Add New Jute Product
+                </h2>
+                <p className="text-xs text-[#7A756C] mt-0.5">
+                  Upload high-res photo to Cloudinary CDN and publish live to store.
+                </p>
+              </div>
+
+              {productAddSuccess && (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-green-800 bg-green-50 border border-green-200 px-3.5 py-1.5 rounded-full animate-bounce">
+                  <Check size={14} />
+                  Product Added Live!
+                </span>
+              )}
+            </div>
+
+            <form onSubmit={handleCreateProduct} className="space-y-6">
+              
+              {/* Image Upload Zone */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-2">
+                  1. Product Photo (Cloudinary CDN Auto-Compression)
+                </label>
+
+                <div className="flex flex-col sm:flex-row items-center gap-4 bg-[#FAF7F2] p-4 rounded-2xl border border-[#E7DFD1]">
+                  {/* Image Preview Thumbnail */}
+                  <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden bg-white border-2 border-dashed border-[#D8A856] flex items-center justify-center flex-shrink-0 shadow-sm">
+                    {isUploadingProductImage ? (
+                      <div className="text-center p-2">
+                        <Loader2 size={24} className="text-[#1B3B2B] animate-spin mx-auto mb-1" />
+                        <span className="text-[10px] text-[#7A756C] font-bold">Uploading...</span>
+                      </div>
+                    ) : newImage ? (
+                      <img src={newImage} alt="Product Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <ImageIcon size={32} className="text-[#A29C91]" />
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex-1 space-y-2 text-center sm:text-left">
+                    <label className="inline-flex items-center gap-2 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-5 py-2.5 rounded-xl text-xs font-bold cursor-pointer transition-colors shadow-sm">
+                      <Upload size={14} />
+                      <span>{isUploadingProductImage ? 'Uploading to CDN...' : 'Choose Photo from Device'}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploadingProductImage}
+                        className="hidden"
+                        onChange={handleProductImageUpload}
+                      />
+                    </label>
+
+                    <p className="text-[11px] text-[#7A756C]">
+                      Photo is automatically optimized into next-gen WebP format and hosted on global CDN.
+                    </p>
+
+                    <input
+                      type="text"
+                      value={newImage}
+                      onChange={(e) => setNewImage(e.target.value)}
+                      placeholder="Or paste an image URL"
+                      className="w-full px-3 py-1.5 text-xs rounded-xl bg-white border border-[#E7DFD1] text-[#55524B]"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
 
-        </div>
-      </div>
+              {/* Title & Category */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1.5">
+                    2. Product Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. 5ft Mandala Circular Braided Floor Rug"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1.5">
+                    3. Category *
+                  </label>
+                  <select
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value as any)}
+                    className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] text-[#1B3B2B] font-semibold focus:outline-none focus:border-[#D8A856] cursor-pointer"
+                  >
+                    <option value="floor_mats">🛋️ Floor Mats & Rugs</option>
+                    <option value="dining">🍽️ Dining Sets & Placemats</option>
+                    <option value="planters">🪴 Planter Baskets & Pots</option>
+                    <option value="bags">👜 Eco Totes & Bags</option>
+                    <option value="decor">🎨 Wall Decor & Hangings</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Pricing (Selling Price & MRP) */}
+              <div className="grid grid-cols-2 gap-4 bg-[#FAF7F2] p-4 rounded-2xl border border-[#E7DFD1]">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                    Selling Price (₹) *
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={newPrice}
+                    onChange={(e) => setNewPrice(e.target.value ? Number(e.target.value) : '')}
+                    className="w-full px-3.5 py-2 text-sm font-bold rounded-xl bg-white border border-[#E7DFD1] text-[#1B3B2B]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                    MRP Price (₹)
+                  </label>
+                  <input
+                    type="number"
+                    value={newMrp}
+                    onChange={(e) => setNewMrp(e.target.value ? Number(e.target.value) : '')}
+                    className="w-full px-3.5 py-2 text-sm font-bold rounded-xl bg-white border border-[#E7DFD1] text-[#7A756C]"
+                  />
+                </div>
+
+                {newPrice && newMrp && Number(newMrp) > Number(newPrice) && (
+                  <div className="col-span-2 text-xs font-bold text-[#1B3B2B] flex items-center gap-1.5">
+                    <span className="bg-[#D8A856] px-2 py-0.5 rounded text-[10px]">
+                      {Math.round(((Number(newMrp) - Number(newPrice)) / Number(newMrp)) * 100)}% Customer Discount
+                    </span>
+                    <span>Customer saves ₹{Number(newMrp) - Number(newPrice)}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Quick Dimension Chips */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1.5">
+                  4. Dimensions (Tap a quick preset or type custom):
+                </label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {dimensionPresets.map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setNewDimensions(preset)}
+                      className={`text-[11px] px-2.5 py-1 rounded-lg border transition-all ${
+                        newDimensions === preset
+                          ? 'bg-[#1B3B2B] text-white border-[#1B3B2B]'
+                          : 'bg-[#FAF7F2] text-[#55524B] border-[#E7DFD1] hover:bg-[#EAE2D5]'
+                      }`}
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  value={newDimensions}
+                  onChange={(e) => setNewDimensions(e.target.value)}
+                  placeholder="e.g. 5.0 Ft Dia (150 cm)"
+                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                />
+              </div>
+
+              {/* Quick Weave Type Chips */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1.5">
+                  5. Braid / Weave Technique (Tap a preset or type custom):
+                </label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {weavePresets.map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => setNewWeave(preset)}
+                      className={`text-[11px] px-2.5 py-1 rounded-lg border transition-all ${
+                        newWeave === preset
+                          ? 'bg-[#1B3B2B] text-white border-[#1B3B2B]'
+                          : 'bg-[#FAF7F2] text-[#55524B] border-[#E7DFD1] hover:bg-[#EAE2D5]'
+                      }`}
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
+                <input
+                  type="text"
+                  value={newWeave}
+                  onChange={(e) => setNewWeave(e.target.value)}
+                  placeholder="e.g. Spiral Hand-Braided"
+                  className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-end pt-4 border-t border-[#E7DFD1]">
+                <button
+                  type="submit"
+                  disabled={isAddingProduct || isUploadingProductImage}
+                  className="flex items-center gap-2 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                >
+                  <Plus size={16} />
+                  <span>{isAddingProduct ? 'Publishing to DB...' : 'Publish Product to Store'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 3: ARTISAN VIDEO & MEDIA STUDIO */}
+        {/* ========================================================= */}
+        {activeTab === 'video_studio' && (
+          <div className="bg-white rounded-3xl border border-[#E7DFD1] p-5 sm:p-8 shadow-sm max-w-4xl mx-auto space-y-6">
+            <div className="flex items-center justify-between border-b border-[#E7DFD1] pb-4">
+              <div>
+                <h2 className="font-serif font-bold text-xl text-[#1B3B2B]">
+                  Artisan Loom & Video Studio
+                </h2>
+                <p className="text-xs text-[#7A756C] mt-0.5">
+                  Change the video story shown to customers in the "Watch Loom Artisans" player.
+                </p>
+              </div>
+
+              {videoSaveSuccess && (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-green-800 bg-green-50 border border-green-200 px-3.5 py-1.5 rounded-full animate-bounce">
+                  <Check size={14} />
+                  Settings Saved Live!
+                </span>
+              )}
+            </div>
+
+            {/* Quick 1-Click Video Presets */}
+            <div className="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E7DFD1] space-y-2.5">
+              <span className="text-xs font-bold uppercase text-[#8B6B38] block">
+                ⚡ 1-Click Tested Video Presets:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleApplyVideoPreset('bengal_loom')}
+                  className="text-xs px-3.5 py-2 rounded-xl bg-white border border-[#E7DFD1] text-[#1B3B2B] hover:bg-[#EAE2D5] font-semibold transition-all shadow-sm"
+                >
+                  ▶ Bengal Loom Weaving (YouTube)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyVideoPreset('braiding_craft')}
+                  className="text-xs px-3.5 py-2 rounded-xl bg-white border border-[#E7DFD1] text-[#1B3B2B] hover:bg-[#EAE2D5] font-semibold transition-all shadow-sm"
+                >
+                  ▶ Hand Braiding Technique (YouTube)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyVideoPreset('fast_mp4')}
+                  className="text-xs px-3.5 py-2 rounded-xl bg-white border border-[#E7DFD1] text-[#1B3B2B] hover:bg-[#EAE2D5] font-semibold transition-all shadow-sm"
+                >
+                  ▶ Fast CDN Basket MP4
+                </button>
+              </div>
+            </div>
+
+            {/* Live Video Player Preview */}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-2">
+                Live Video Preview (What customers see when clicking "Watch Loom Artisans"):
+              </label>
+              <div className="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-[#E7DFD1] shadow-md">
+                {docVideoUrl.includes('youtube') || docVideoUrl.includes('youtu.be') ? (
+                  <iframe
+                    src={formatYouTubeUrl(docVideoUrl)}
+                    title="Live Artisan Video Preview"
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video
+                    src={docVideoUrl}
+                    poster={videoPosterUrl}
+                    controls
+                    className="w-full h-full object-contain"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Settings Form */}
+            <form onSubmit={handleSaveVideoSettings} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                  Documentary / Modal Video URL (YouTube or MP4 stream) *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={docVideoUrl}
+                  onChange={(e) => setDocVideoUrl(e.target.value)}
+                  placeholder="https://www.youtube.com/embed/BHbDLSXmtBA or https://youtube.com/watch?v=..."
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                />
+                <p className="text-[11px] text-[#7A756C] mt-1">
+                  Supports full YouTube URLs, short youtu.be links, or direct MP4 video files.
+                </p>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-bold uppercase tracking-wider text-[#8B6B38]">
+                    Video Poster Image URL
+                  </label>
+                  <label className="text-[11px] text-[#1B3B2B] font-semibold flex items-center gap-1 cursor-pointer hover:underline">
+                    <Upload size={12} />
+                    <span>Upload Poster to Cloudinary</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleVideoMediaUpload(e, 'poster')}
+                    />
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  value={videoPosterUrl}
+                  onChange={(e) => setVideoPosterUrl(e.target.value)}
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                  Top Announcement Bar Message
+                </label>
+                <input
+                  type="text"
+                  value={announcementText}
+                  onChange={(e) => setAnnouncementText(e.target.value)}
+                  className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                />
+              </div>
+
+              <div className="flex justify-end pt-3 border-t border-[#E7DFD1]">
+                <button
+                  type="submit"
+                  disabled={isSavingVideo || isUploadingMedia}
+                  className="flex items-center gap-2 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                >
+                  <Check size={16} />
+                  <span>{isSavingVideo ? 'Saving to Database...' : 'Save Video Settings Live'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+      </main>
     </div>
   );
 };
