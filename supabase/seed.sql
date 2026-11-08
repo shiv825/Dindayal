@@ -111,23 +111,6 @@ INSERT INTO public.products (
   true
 ),
 (
-  'Dindayal 3-Strand Hawser-Laid Jute Rope (50m)',
-  'dindayal-3-strand-hawser-laid-jute-rope',
-  'ropes',
-  899,
-  1499,
-  4.9,
-  87,
-  '12mm Diameter x 50 Meters Coil',
-  'High Breaking Strength Industrial Grade',
-  '/assets/images/jute_twisted_rope.jpg',
-  'Heavy Duty 100% Pure Jute',
-  'Industrial Core',
-  50,
-  false,
-  false
-),
-(
   'Macrame Sunburst Jute Wall Hanging',
   'macrame-sunburst-jute-wall-hanging',
   'decor',

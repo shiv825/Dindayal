@@ -70,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             { id: 'dining', label: 'Dining Sets' },
             { id: 'planters', label: 'Planters' },
             { id: 'bags', label: 'Totes & Bags' },
-            { id: 'ropes', label: 'Ropes' },
+            { id: 'decor', label: 'Eco Wall Decor' },
           ].map((tab) => (
             <button
               key={tab.id}

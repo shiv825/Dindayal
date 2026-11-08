@@ -50,10 +50,10 @@ export const StoryBubbles: React.FC<StoryBubblesProps> = ({
       action: () => onSelectCategory('bags'),
     },
     {
-      label: 'Twisted Ropes',
+      label: 'Wall Hangings',
       isReel: false,
-      image: '/assets/images/jute_twisted_rope.jpg',
-      action: () => onSelectCategory('ropes'),
+      image: '/assets/images/jute_wall_hanging.jpg',
+      action: () => onSelectCategory('decor'),
     },
   ];
 

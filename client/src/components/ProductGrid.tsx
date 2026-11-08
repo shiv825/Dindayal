@@ -27,7 +27,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({
     { id: 'dining', label: 'Dining Sets' },
     { id: 'planters', label: 'Planters' },
     { id: 'bags', label: 'Totes & Bags' },
-    { id: 'ropes', label: 'Ropes' },
+    { id: 'decor', label: 'Eco Wall Decor' },
   ];
 
   const filteredProducts = useMemo(() => {
