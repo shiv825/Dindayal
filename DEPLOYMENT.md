@@ -81,3 +81,4 @@ Deploy the backend first so you have your live API URL (e.g., `https://dindayal-
    Click **Admin Portal** on your live site, go to Catalog Manager, choose an image file to upload. It will upload to Cloudinary and display with automatic optimization.
 4. **Test B2B Calculator**:
    Drag the slider and test sending a WhatsApp quote.
+
