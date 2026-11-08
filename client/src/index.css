@@ -5,9 +5,23 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    max-width: 100%;
+    overflow-x: hidden;
+    width: 100%;
   }
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    max-width: 100%;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  #root {
+    max-width: 100%;
+    overflow-x: hidden;
+    width: 100%;
   }
   h1, h2, h3, .font-serif {
     font-family: 'Playfair Display', Georgia, serif;
@@ -27,7 +41,8 @@
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #FAF7F2;
@@ -40,3 +55,11 @@
   background: #1B3B2B;
 }
 
+/* Hide scrollbar on touch devices for clean carousels */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

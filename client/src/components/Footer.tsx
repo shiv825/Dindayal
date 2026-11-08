@@ -3,36 +3,36 @@ import { MapPin, Phone, Mail, ShieldCheck, Heart } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#12271D] text-[#FAF7F2] border-t border-[#1B3B2B] pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+    <footer className="w-full max-w-full overflow-hidden bg-[#12271D] text-[#FAF7F2] border-t border-[#1B3B2B] pt-12 sm:pt-16 pb-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 pb-10 border-b border-white/10">
           
           {/* Brand & Heritage */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2.5">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-2">
               <span className="text-2xl">🌿</span>
-              <span className="font-serif text-xl font-bold tracking-tight text-white">
+              <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-white">
                 Dindayal <span className="text-[#D8A856] font-normal">& Craft</span>
               </span>
             </div>
             <p className="text-xs text-[#C5BDB0] leading-relaxed">
               In alliance with <strong>Indian Jute House</strong>. Preserving Bengal's generational handloom and hand-braiding heritage with zero-plastic home accessories.
             </p>
-            <div className="pt-2 text-[11px] text-[#EAD7B5] space-y-1">
+            <div className="pt-1 text-[11px] text-[#EAD7B5] space-y-1">
               <p>• Managing Partner: <strong>Mr. Likhit Gupta</strong></p>
               <p className="flex items-center gap-1">
-                <ShieldCheck size={13} className="text-[#D8A856]" />
+                <ShieldCheck size={13} className="text-[#D8A856] flex-shrink-0" />
                 <span>GSTIN: <strong>19AACFD2094B1ZS</strong></span>
               </p>
             </div>
           </div>
 
           {/* Kolkata Head Office & Works */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-[#D8A856] uppercase tracking-wider">
+          <div className="space-y-2.5 sm:space-y-3">
+            <h4 className="font-serif font-bold text-xs sm:text-sm text-[#D8A856] uppercase tracking-wider">
               Kolkata Headquarters & Works
             </h4>
-            <div className="text-xs text-[#C5BDB0] space-y-2.5">
+            <div className="text-xs text-[#C5BDB0] space-y-2">
               <div className="flex items-start gap-2">
                 <MapPin size={14} className="text-[#D8A856] flex-shrink-0 mt-0.5" />
                 <p>
@@ -54,11 +54,11 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Mumbai & Export Desk */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-[#D8A856] uppercase tracking-wider">
+          <div className="space-y-2.5 sm:space-y-3">
+            <h4 className="font-serif font-bold text-xs sm:text-sm text-[#D8A856] uppercase tracking-wider">
               Export & Regional Desk
             </h4>
-            <div className="text-xs text-[#C5BDB0] space-y-2.5">
+            <div className="text-xs text-[#C5BDB0] space-y-2">
               <div className="flex items-start gap-2">
                 <MapPin size={14} className="text-[#D8A856] flex-shrink-0 mt-0.5" />
                 <p>
@@ -82,8 +82,8 @@ export const Footer: React.FC = () => {
           </div>
 
           {/* Sustainable Promise */}
-          <div className="space-y-3">
-            <h4 className="font-serif font-bold text-sm text-[#D8A856] uppercase tracking-wider">
+          <div className="space-y-2.5 sm:space-y-3">
+            <h4 className="font-serif font-bold text-xs sm:text-sm text-[#D8A856] uppercase tracking-wider">
               Natural Living Pledge
             </h4>
             <p className="text-xs text-[#C5BDB0] leading-relaxed">
@@ -92,7 +92,7 @@ export const Footer: React.FC = () => {
             <div className="pt-2">
               <a
                 href="#bulk-calculator"
-                className="inline-block text-xs font-bold px-4 py-2 rounded-xl bg-[#D8A856] text-[#1B3B2B] hover:bg-[#C89D56] transition-colors"
+                className="inline-block text-xs font-bold px-4 py-2.5 rounded-xl bg-[#D8A856] text-[#1B3B2B] hover:bg-[#C89D56] transition-colors"
               >
                 Inquire Wholesale Orders →
               </a>
@@ -102,9 +102,9 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom copyright */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#8B857B] gap-4">
+        <div className="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#8B857B] gap-3 text-center sm:text-left">
           <p>© {new Date().getFullYear()} Dindayal Jute & Craft (Indian Jute House). All rights reserved.</p>
-          <p className="flex items-center gap-1">
+          <p className="flex items-center justify-center gap-1">
             <span>Crafted with</span>
             <Heart size={12} className="text-red-400 fill-red-400" />
             <span>for natural, conscious spaces</span>
@@ -114,4 +114,3 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
-

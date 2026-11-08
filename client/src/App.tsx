@@ -86,7 +86,7 @@ export const App: React.FC = () => {
   const cartTotalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#24221E]">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#FAF7F2] text-[#24221E]">
       {/* Navigation Header */}
       <Navbar
         cartCount={cartTotalCount}
