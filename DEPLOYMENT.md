@@ -20,7 +20,7 @@ Deploy the backend first so you have your live API URL (e.g., `https://dindayal-
    - **Name**: `dindayal-backend`
    - **Root Directory**: `server`
    - **Runtime**: `Node`
-   - **Build Command**: `npm install && npm run build`
+   - **Build Command**: `npm install --include=dev && npm run build`
    - **Start Command**: `npm run start`
    - **Health Check Path**: `/api/health`
 5. Click **Advanced** → **Add Environment Variables**:
