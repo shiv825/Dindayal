@@ -44,46 +44,34 @@ export const HeroStage: React.FC<HeroStageProps> = ({
   const [activeStage, setActiveStage] = useState<RoomStage>(roomStages[0]);
 
   return (
-    <section className="relative w-full max-w-full overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#F4EFE6] to-[#FAF7F2] pt-14 pb-8 sm:pt-16 sm:pb-12 md:py-20 border-b border-[#E7DFD1]">
-      {/* Dangling Braided Jute Ropes with Realistic Swinging Motion (Visible & Scaled on Mobile + Desktop) */}
-      <div className="hanging-ropes-stage pointer-events-none select-none" aria-hidden="true">
-        {/* Left Rope: Authentic Bengal Craft Tag */}
-        <div className="hanging-rope-unit rope-pendulum-left left-2 sm:left-4 lg:left-8 scale-[0.72] sm:scale-85 lg:scale-100 origin-top-left z-20">
-          <div className="braided-cord h-12 sm:h-20 lg:h-24"></div>
-          <div className="rope-brass-knot"></div>
-          <div className="swinging-kraft-tag max-w-[130px] sm:max-w-[170px] pointer-events-auto">
-            <div className="tag-eyelet"></div>
-            <div className="text-[8px] sm:text-[9px] font-bold text-[#8e5e20] uppercase tracking-wider">🧶 Bengal Looms</div>
-            <div className="font-serif text-[11px] sm:text-sm font-bold text-[#153924] leading-tight">Hand-Braided</div>
-            <div className="hidden sm:block text-[9px] text-[#6d4d1d] mt-0.5">Traditional Howrah Guild</div>
-            <div className="inline-block mt-1 bg-[#18432d] text-white text-[7px] sm:text-[8px] font-semibold px-1.5 py-0.5 rounded-full">100% Eco Bast</div>
+    <section className="relative w-full max-w-full overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#F4EFE6] to-[#FAF7F2] pt-14 pb-8 sm:py-12 md:py-20 border-b border-[#E7DFD1]">
+      {/* Hanging artisan woven ropes (Visible on Mobile & PC) */}
+      <div className="absolute top-0 left-0 right-0 pointer-events-none z-10 select-none overflow-hidden h-36 sm:h-44">
+        {/* Rope 1: Left Bengal Looms */}
+        <div className="absolute top-0 left-3 sm:left-8 lg:left-14 flex flex-col items-center">
+          <div className="w-[2.5px] sm:w-[3px] h-16 sm:h-24 lg:h-32 bg-gradient-to-b from-[#8B6B38] via-[#C89D56] to-[#D8A856] shadow-sm"></div>
+          <div className="bg-[#1B3B2B] text-[#EAD7B5] border border-[#D8A856]/40 text-[8px] sm:text-[10px] font-bold tracking-widest uppercase px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg flex items-center gap-1 sm:gap-1.5 transform -rotate-2 whitespace-nowrap">
+            <span>🧶</span>
+            <span>Authentic Bengal Looms</span>
           </div>
         </div>
 
-        {/* Right Rope: Artisan Guild Tag */}
-        <div className="hanging-rope-unit rope-pendulum-right right-2 sm:right-4 lg:right-8 scale-[0.72] sm:scale-85 lg:scale-100 origin-top-right z-20">
-          <div className="braided-cord h-14 sm:h-24 lg:h-32"></div>
-          <div className="rope-brass-knot"></div>
-          <div className="swinging-kraft-tag max-w-[130px] sm:max-w-[170px] pointer-events-auto">
-            <div className="tag-eyelet"></div>
-            <div className="text-[8px] sm:text-[9px] font-bold text-[#8e5e20] uppercase tracking-wider">🌱 Estd 1985</div>
-            <div className="font-serif text-[11px] sm:text-sm font-bold text-[#153924] leading-tight">Zero Plastic</div>
-            <div className="hidden sm:block text-[9px] text-[#6d4d1d] mt-0.5">Direct Loom Clusters</div>
-            <div className="inline-block mt-1 bg-[#8e5e20] text-white text-[7px] sm:text-[8px] font-semibold px-1.5 py-0.5 rounded-full">Golden Fiber</div>
+        {/* Rope 2: Middle Accent Jute Rope */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center">
+          <div className="w-[2px] h-14 lg:h-20 bg-gradient-to-b from-[#8B6B38] via-[#C89D56] to-[#D8A856] shadow-sm"></div>
+          <div className="bg-[#D8A856] text-[#1B3B2B] font-bold text-[9px] uppercase px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1 transform rotate-1 whitespace-nowrap">
+            <span>✨</span>
+            <span>100% Hand-Braided</span>
           </div>
         </div>
 
-        {/* Ambient Floating Braided Tassels */}
-        <div className="hanging-rope-unit rope-tassel-swing-1 left-[26%] sm:left-[24%] scale-75 sm:scale-90 lg:scale-100 origin-top opacity-60 sm:opacity-80">
-          <div className="braided-cord h-8 sm:h-12 lg:h-16"></div>
-          <div className="rope-brass-knot"></div>
-          <div className="jute-tassel-knot">🪢</div>
-        </div>
-
-        <div className="hanging-rope-unit rope-tassel-swing-2 right-[28%] sm:right-[26%] scale-75 sm:scale-90 lg:scale-100 origin-top opacity-60 sm:opacity-80">
-          <div className="braided-cord h-10 sm:h-16 lg:h-20"></div>
-          <div className="rope-brass-knot"></div>
-          <div className="jute-tassel-knot">🪢</div>
+        {/* Rope 3: Right Eco Fiber Rope */}
+        <div className="absolute top-0 right-3 sm:right-8 lg:right-14 flex flex-col items-center">
+          <div className="w-[2.5px] sm:w-[3px] h-14 sm:h-20 lg:h-28 bg-gradient-to-b from-[#8B6B38] via-[#C89D56] to-[#D8A856] shadow-sm"></div>
+          <div className="bg-[#1B3B2B] text-[#EAD7B5] border border-[#D8A856]/40 text-[8px] sm:text-[10px] font-bold tracking-widest uppercase px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg flex items-center gap-1 sm:gap-1.5 transform rotate-2 whitespace-nowrap">
+            <span>🌿</span>
+            <span>Zero Microplastics</span>
+          </div>
         </div>
       </div>
 

@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { StoryBubbles } from './components/StoryBubbles';
 import { HeroStage } from './components/HeroStage';
-import { MarqueeRibbon } from './components/MarqueeRibbon';
-import { BentoCategories } from './components/BentoCategories';
 import { ProductGrid } from './components/ProductGrid';
-import { CraftJourney } from './components/CraftJourney';
-import { Lookbook } from './components/Lookbook';
-import { Testimonials } from './components/Testimonials';
 import { WholesaleCalculator } from './components/WholesaleCalculator';
-import { FAQSection } from './components/FAQSection';
 import { VideoDocModal } from './components/VideoDocModal';
 import { CartDrawer } from './components/CartDrawer';
 import { AdminPortal } from './components/AdminPortal';
@@ -125,22 +119,6 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* Infinite Animated Marquee Ribbon */}
-      <MarqueeRibbon />
-
-      {/* Asymmetrical Bento Grid Showcase (Curated Collections) */}
-      <BentoCategories
-        onSelectCategory={(cat) => {
-          setSelectedCategory(cat);
-          const el = document.getElementById('products-catalog');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-        onOpenWholesale={() => {
-          const el = document.getElementById('wholesale-calculator');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
-
       {/* Main Artisan Product Catalog */}
       <ProductGrid
         products={products}
@@ -150,22 +128,8 @@ export const App: React.FC = () => {
         onQuickInquiry={handleQuickInquiry}
       />
 
-      {/* 4-Stage Craft Journey ("From Soil to Loom") + Environmental Counters */}
-      <CraftJourney />
-
-      {/* Real Living Spaces Lookbook */}
-      <Lookbook />
-
-      {/* Verified Customer Reviews */}
-      <Testimonials />
-
       {/* B2B Wholesale & Mill Calculator */}
-      <div id="wholesale-calculator">
-        <WholesaleCalculator />
-      </div>
-
-      {/* Interactive FAQ Accordion */}
-      <FAQSection />
+      <WholesaleCalculator />
 
       {/* Footer with verified business credentials */}
       <Footer />
