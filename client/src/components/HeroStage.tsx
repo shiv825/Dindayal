@@ -45,10 +45,10 @@ export const HeroStage: React.FC<HeroStageProps> = ({
 
   return (
     <section className="relative w-full max-w-full overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#F4EFE6] to-[#FAF7F2] pt-14 pb-8 sm:py-12 md:py-20 border-b border-[#E7DFD1]">
-      {/* Hanging artisan woven ropes (Visible on Mobile & PC) */}
+      {/* Hanging artisan woven ropes (Visible on Mobile, Tablet & PC) */}
       <div className="absolute top-0 left-0 right-0 pointer-events-none z-10 select-none overflow-hidden h-36 sm:h-44">
         {/* Rope 1: Left Bengal Looms */}
-        <div className="absolute top-0 left-3 sm:left-8 lg:left-14 flex flex-col items-center">
+        <div className="absolute top-0 left-2 sm:left-6 lg:left-14 flex flex-col items-center scale-90 sm:scale-100 origin-top-left">
           <div className="w-[2.5px] sm:w-[3px] h-16 sm:h-24 lg:h-32 bg-gradient-to-b from-[#8B6B38] via-[#C89D56] to-[#D8A856] shadow-sm"></div>
           <div className="bg-[#1B3B2B] text-[#EAD7B5] border border-[#D8A856]/40 text-[8px] sm:text-[10px] font-bold tracking-widest uppercase px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg flex items-center gap-1 sm:gap-1.5 transform -rotate-2 whitespace-nowrap">
             <span>🧶</span>
@@ -66,7 +66,7 @@ export const HeroStage: React.FC<HeroStageProps> = ({
         </div>
 
         {/* Rope 3: Right Eco Fiber Rope */}
-        <div className="absolute top-0 right-3 sm:right-8 lg:right-14 flex flex-col items-center">
+        <div className="absolute top-0 right-2 sm:right-6 lg:right-14 flex flex-col items-center scale-90 sm:scale-100 origin-top-right">
           <div className="w-[2.5px] sm:w-[3px] h-14 sm:h-20 lg:h-28 bg-gradient-to-b from-[#8B6B38] via-[#C89D56] to-[#D8A856] shadow-sm"></div>
           <div className="bg-[#1B3B2B] text-[#EAD7B5] border border-[#D8A856]/40 text-[8px] sm:text-[10px] font-bold tracking-widest uppercase px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-lg flex items-center gap-1 sm:gap-1.5 transform rotate-2 whitespace-nowrap">
             <span>🌿</span>
@@ -85,30 +85,30 @@ export const HeroStage: React.FC<HeroStageProps> = ({
               <span>Dindayal Jute & Craft • Indian Jute House</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#1B3B2B] leading-[1.18]">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-[#1B3B2B] leading-[1.18]">
               Handcrafted Jute Mats & Eco Living,{' '}
               <span className="italic font-normal text-[#8B6B38] block sm:inline">
                 Woven with Soul.
               </span>
             </h1>
 
-            <p className="text-sm sm:text-lg text-[#55524B] leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-base md:text-lg text-[#55524B] leading-relaxed max-w-xl">
               From the fertile delta of Bengal to modern sustainable homes. Hand-braided circular floor rugs, ribbed anti-slip entry mats, and artisan dining runners engineered for longevity and barefoot comfort.
             </p>
 
             {/* Quick trust metrics */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-2 border-t border-[#E7DFD1]/80 max-w-lg">
               <div>
-                <p className="font-serif text-xl sm:text-2xl font-bold text-[#1B3B2B]">100%</p>
-                <p className="text-[10px] sm:text-xs text-[#7A756C]">Golden Bengal Fiber</p>
+                <p className="font-serif text-lg sm:text-2xl font-bold text-[#1B3B2B]">100%</p>
+                <p className="text-[9px] sm:text-xs text-[#7A756C]">Golden Bengal Fiber</p>
               </div>
               <div>
-                <p className="font-serif text-xl sm:text-2xl font-bold text-[#1B3B2B]">10+ Yrs</p>
-                <p className="text-[10px] sm:text-xs text-[#7A756C]">Artisan Loom Heritage</p>
+                <p className="font-serif text-lg sm:text-2xl font-bold text-[#1B3B2B]">10+ Yrs</p>
+                <p className="text-[9px] sm:text-xs text-[#7A756C]">Artisan Loom Heritage</p>
               </div>
               <div>
-                <p className="font-serif text-xl sm:text-2xl font-bold text-[#1B3B2B]">Zero</p>
-                <p className="text-[10px] sm:text-xs text-[#7A756C]">Microplastic Residue</p>
+                <p className="font-serif text-lg sm:text-2xl font-bold text-[#1B3B2B]">Zero</p>
+                <p className="text-[9px] sm:text-xs text-[#7A756C]">Microplastic Residue</p>
               </div>
             </div>
 
