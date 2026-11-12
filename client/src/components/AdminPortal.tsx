@@ -16,7 +16,7 @@ import {
   CloudLightning,
   Edit3,
 } from 'lucide-react';
-import { Product, SiteSettings } from '../types';
+import { Product, SiteSettings, normalizeCategory } from '../types';
 import { api } from '../lib/api';
 
 interface AdminPortalProps {
@@ -53,7 +53,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
   // New Product Form State
   const [newTitle, setNewTitle] = useState('');
-  const [newCategory, setNewCategory] = useState<'floor_mats' | 'dining' | 'planters' | 'bags' | 'decor'>('floor_mats');
+  const [newCategory, setNewCategory] = useState<string>('mats_carpets');
   const [newPrice, setNewPrice] = useState<number | ''>(1299);
   const [newMrp, setNewMrp] = useState<number | ''>(1999);
   const [newDimensions, setNewDimensions] = useState('4.0 Ft Diameter (120 cm)');
@@ -68,7 +68,7 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   // Edit Product Modal State
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editTitle, setEditTitle] = useState('');
-  const [editCategory, setEditCategory] = useState<'floor_mats' | 'dining' | 'planters' | 'bags' | 'decor'>('floor_mats');
+  const [editCategory, setEditCategory] = useState<string>('mats_carpets');
   const [editPrice, setEditPrice] = useState<number | ''>('');
   const [editMrp, setEditMrp] = useState<number | ''>('');
   const [editDimensions, setEditDimensions] = useState('');
@@ -286,7 +286,11 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
 
   // Filter products in catalog view
   const filteredCatalog = products.filter((p) => {
-    const matchCat = catalogCategory === 'all' || p.category === catalogCategory;
+    const norm = normalizeCategory(p.category);
+    const matchCat =
+      catalogCategory === 'all' ||
+      p.category === catalogCategory ||
+      norm === catalogCategory;
     const matchSearch =
       p.title.toLowerCase().includes(catalogSearch.toLowerCase()) ||
       p.category.toLowerCase().includes(catalogSearch.toLowerCase());
@@ -431,12 +435,14 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                   onChange={(e) => setCatalogCategory(e.target.value)}
                   className="text-xs py-2 px-3 rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] text-[#4A4740] focus:outline-none focus:border-[#D8A856] cursor-pointer"
                 >
-                  <option value="all">All Categories</option>
-                  <option value="floor_mats">Floor Mats & Rugs</option>
-                  <option value="dining">Dining Sets</option>
-                  <option value="planters">Planters</option>
-                  <option value="bags">Bags & Totes</option>
-                  <option value="decor">Wall Decor</option>
+                  <option value="all">All Collections</option>
+                  <option value="mats_carpets">🛋️ Jute Mats & Carpets</option>
+                  <option value="bags">👜 Jute Bags</option>
+                  <option value="decor_crafts">🪴 Home Decor & Handicrafts</option>
+                  <option value="floor_mats">Floor Mats (Legacy)</option>
+                  <option value="dining">Dining Sets (Legacy)</option>
+                  <option value="planters">Planters (Legacy)</option>
+                  <option value="decor">Wall Decor (Legacy)</option>
                 </select>
               </div>
 
@@ -645,11 +651,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                       onChange={(e) => setEditCategory(e.target.value as any)}
                       className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] font-semibold text-[#1B3B2B]"
                     >
-                      <option value="floor_mats">🛋️ Floor Mats & Rugs</option>
-                      <option value="dining">🍽️ Dining Sets & Placemats</option>
-                      <option value="planters">🪴 Planter Baskets</option>
-                      <option value="bags">👜 Totes & Bags</option>
-                      <option value="decor">🎨 Wall Decor</option>
+                      <option value="mats_carpets">🛋️ Jute Mats & Carpets (Rugs, Floor Mats, Runners)</option>
+                      <option value="bags">👜 Jute Bags (Shopping bags, Totes, Sleeves)</option>
+                      <option value="decor_crafts">🪴 Home Decor & Handicrafts (Baskets, Wall Decor, Planters)</option>
+                      <option value="floor_mats">Floor Mats (Legacy)</option>
+                      <option value="dining">Dining Sets (Legacy)</option>
+                      <option value="planters">Planters (Legacy)</option>
+                      <option value="decor">Wall Decor (Legacy)</option>
                     </select>
                   </div>
                 </div>
@@ -882,11 +890,13 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
                     onChange={(e) => setNewCategory(e.target.value as any)}
                     className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] text-[#1B3B2B] font-semibold focus:outline-none focus:border-[#D8A856] cursor-pointer"
                   >
-                    <option value="floor_mats">🛋️ Floor Mats & Rugs</option>
-                    <option value="dining">🍽️ Dining Sets & Placemats</option>
-                    <option value="planters">🪴 Planter Baskets & Pots</option>
-                    <option value="bags">👜 Eco Totes & Bags</option>
-                    <option value="decor">🎨 Wall Decor & Hangings</option>
+                    <option value="mats_carpets">🛋️ Jute Mats & Carpets (Rugs, Floor Mats, Runners)</option>
+                    <option value="bags">👜 Jute Bags (Shopping bags, Totes, Sleeves)</option>
+                    <option value="decor_crafts">🪴 Home Decor & Handicrafts (Baskets, Wall Decor, Planters)</option>
+                    <option value="floor_mats">Floor Mats (Legacy)</option>
+                    <option value="dining">Dining Sets (Legacy)</option>
+                    <option value="planters">Planters (Legacy)</option>
+                    <option value="decor">Wall Decor (Legacy)</option>
                   </select>
                 </div>
               </div>

@@ -1,17 +1,29 @@
 export type ProductCategory = 
   | 'all'
+  | 'mats_carpets'
+  | 'bags'
+  | 'decor_crafts'
   | 'floor_mats' 
   | 'dining' 
   | 'planters' 
-  | 'bags' 
   | 'ropes' 
   | 'decor';
+
+export const normalizeCategory = (cat: string): 'mats_carpets' | 'bags' | 'decor_crafts' => {
+  if (cat === 'mats_carpets' || cat === 'floor_mats' || cat === 'dining' || cat === 'ropes') {
+    return 'mats_carpets';
+  }
+  if (cat === 'bags') {
+    return 'bags';
+  }
+  return 'decor_crafts';
+};
 
 export interface Product {
   id: string;
   title: string;
   slug: string;
-  category: 'floor_mats' | 'dining' | 'planters' | 'bags' | 'ropes' | 'decor';
+  category: 'mats_carpets' | 'bags' | 'decor_crafts' | 'floor_mats' | 'dining' | 'planters' | 'ropes' | 'decor' | string;
   price_inr: number;
   mrp_inr: number;
   rating: number;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { StoryBubbles } from './components/StoryBubbles';
 import { HeroStage } from './components/HeroStage';
+import { CollectionsShowcase } from './components/CollectionsShowcase';
 import { ProductGrid } from './components/ProductGrid';
 import { WholesaleCalculator } from './components/WholesaleCalculator';
 import { VideoDocModal } from './components/VideoDocModal';
@@ -78,7 +79,7 @@ export const App: React.FC = () => {
   // Quick WhatsApp Quote for a specific product
   const handleQuickInquiry = (product: Product) => {
     const text = encodeURIComponent(
-      `Hello Dindayal Jute & Craft team, I want to inquire about bulk wholesale pricing for: ${product.title} (Retail MRP ₹${product.price_inr}). Please share bulk discount tiers.`
+      `Hello Dindayal Jute & Craft / Jute Mates team, I want to inquire about bulk wholesale pricing for: ${product.title} (Retail MRP ₹${product.price_inr}). Please share bulk discount tiers.`
     );
     window.open(`https://wa.me/919830296606?text=${text}`, '_blank');
   };
@@ -86,7 +87,7 @@ export const App: React.FC = () => {
   const cartTotalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#FAF7F2] text-[#24221E]">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#08140D] text-[#F5F8F6]">
       {/* Navigation Header */}
       <Navbar
         cartCount={cartTotalCount}
@@ -95,7 +96,7 @@ export const App: React.FC = () => {
         selectedCategory={selectedCategory}
         onSelectCategory={(cat) => {
           setSelectedCategory(cat);
-          const el = document.getElementById('products-catalog');
+          const el = document.getElementById(cat === 'all' ? 'hero-stage' : 'products-catalog');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
       />
@@ -110,10 +111,19 @@ export const App: React.FC = () => {
         onOpenVideo={() => setIsVideoModalOpen(true)}
       />
 
-      {/* Hero Stage with Bengal Looms Story & Room Visualizer */}
+      {/* Hero Stage with Bengali Jute Mates Naturally Together & Neon Halo Ring */}
       <HeroStage
         onOpenVideo={() => setIsVideoModalOpen(true)}
         onExploreProducts={() => {
+          const el = document.getElementById('products-catalog');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
+
+      {/* The 3 Signature Collections Showcase (Arched Cards + Our Impact + Together for a Greener Tomorrow) */}
+      <CollectionsShowcase
+        onSelectCategory={(cat) => {
+          setSelectedCategory(cat);
           const el = document.getElementById('products-catalog');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
@@ -162,10 +172,10 @@ export const App: React.FC = () => {
 
       {/* Floating WhatsApp Action Pill */}
       <a
-        href="https://wa.me/919830296606?text=Hello%20Dindayal%20Jute%20%26%20Craft,%20I%20have%20an%20inquiry%20regarding%20handcrafted%20jute%20mats."
+        href="https://wa.me/919830296606?text=Hello%20Dindayal%20Jute%20%26%20Craft,%20I%20have%20an%20inquiry%20regarding%20handcrafted%20jute%20products."
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center border-2 border-white"
+        className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center border-2 border-white/80"
         aria-label="Chat on WhatsApp"
       >
         <MessageSquare size={22} fill="white" />

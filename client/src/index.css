@@ -8,6 +8,8 @@
     max-width: 100%;
     overflow-x: hidden;
     width: 100%;
+    background-color: #08140D;
+    color: #F5F8F6;
   }
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -15,6 +17,8 @@
     overflow-x: hidden;
     width: 100%;
     position: relative;
+    background-color: #08140D;
+    color: #F5F8F6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -22,37 +26,52 @@
     max-width: 100%;
     overflow-x: hidden;
     width: 100%;
+    background-color: #08140D;
   }
   h1, h2, h3, .font-serif {
     font-family: 'Playfair Display', Georgia, serif;
   }
+  .font-script {
+    font-family: 'Caveat', 'Dancing Script', cursive;
+  }
 }
 
-/* Custom smooth calm elevation */
-.card-hover-calm {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+/* Glassmorphism & Luxury Dark Glow */
+.glass-panel {
+  background: rgba(13, 34, 24, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(101, 216, 134, 0.18);
 }
 
-.card-hover-calm:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 32px -8px rgba(27, 59, 43, 0.12), 0 6px 14px -4px rgba(216, 168, 86, 0.1);
-  border-color: #D8A856;
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-panel-hover:hover {
+  border-color: rgba(101, 216, 134, 0.5);
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.8), 0 0 25px rgba(101, 216, 134, 0.2);
+  transform: translateY(-4px);
 }
 
-/* Custom scrollbar */
+/* Custom glowing neon ring */
+.neon-ring {
+  box-shadow: 0 0 35px rgba(101, 216, 134, 0.4), inset 0 0 25px rgba(101, 216, 134, 0.25);
+}
+
+/* Custom scrollbar for dark forest theme */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF7F2;
+  background: #08140D;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D8A856;
+  background: #1E432E;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #1B3B2B;
+  background: #65D886;
 }
 
 /* Hide scrollbar on touch devices for clean carousels */
