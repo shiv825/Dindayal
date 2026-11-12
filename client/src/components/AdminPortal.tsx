@@ -15,8 +15,12 @@ import {
   CheckCircle2,
   CloudLightning,
   Edit3,
+  Palette,
+  Sparkles,
+  Store,
+  Sliders,
 } from 'lucide-react';
-import { Product, SiteSettings } from '../types';
+import { Product, SiteSettings, ThemePalette } from '../types';
 import { api } from '../lib/api';
 
 interface AdminPortalProps {
@@ -36,11 +40,33 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
   products,
   onRefreshProducts,
 }) => {
-  const [activeTab, setActiveTab] = useState<'catalog' | 'add_product' | 'video_studio'>('catalog');
+  const [activeTab, setActiveTab] = useState<'catalog' | 'add_product' | 'design_studio' | 'video_studio'>('catalog');
 
   // Search & Filter in Catalog
   const [catalogSearch, setCatalogSearch] = useState('');
   const [catalogCategory, setCatalogCategory] = useState<string>('all');
+
+  // Design & Store Studio State
+  const [themePalette, setThemePalette] = useState<ThemePalette>(settings.theme_palette || 'emerald');
+  const [storeName, setStoreName] = useState(settings.store_name || 'Dindayal & Craft');
+  const [storeSubtitle, setStoreSubtitle] = useState(settings.store_subtitle || 'Indian Jute House • Estd. Kolkata');
+  const [gstinNumber, setGstinNumber] = useState(settings.gstin_number || '19AACFD2094B1ZS');
+  const [contactPhone, setContactPhone] = useState(settings.contact_phone || '+91 98302 96606');
+  const [contactEmail, setContactEmail] = useState(settings.contact_email || 'info@indianjutehouse.com');
+  const [whatsappNumber, setWhatsappNumber] = useState(settings.whatsapp_number || '+919830296606');
+  const [heroHeadline, setHeroHeadline] = useState(settings.hero_headline || 'Handcrafted Jute Mats & Eco Living, Woven with Soul.');
+  const [heroSubtitle, setHeroSubtitle] = useState(settings.hero_subtitle || 'From the fertile delta of Bengal to modern sustainable homes. Hand-braided circular floor rugs, ribbed anti-slip entry mats, and artisan dining runners engineered for longevity and barefoot comfort.');
+  const [trust1Val, setTrust1Val] = useState(settings.trust_badge_1_val || '100%');
+  const [trust1Label, setTrust1Label] = useState(settings.trust_badge_1_label || 'Golden Bengal Fiber');
+  const [trust2Val, setTrust2Val] = useState(settings.trust_badge_2_val || '10+ Yrs');
+  const [trust2Label, setTrust2Label] = useState(settings.trust_badge_2_label || 'Artisan Loom Heritage');
+  const [trust3Val, setTrust3Val] = useState(settings.trust_badge_3_val || 'Zero');
+  const [trust3Label, setTrust3Label] = useState(settings.trust_badge_3_label || 'Microplastic Residue');
+  const [rope1, setRope1] = useState(settings.rope_badge_1 || '🧶 Authentic Bengal Looms');
+  const [rope2, setRope2] = useState(settings.rope_badge_2 || '✨ 100% Hand-Braided');
+  const [rope3, setRope3] = useState(settings.rope_badge_3 || '🌿 Zero Microplastics');
+  const [isSavingDesign, setIsSavingDesign] = useState(false);
+  const [designSaveSuccess, setDesignSaveSuccess] = useState(false);
 
   // Video studio settings state
   const [ambientVideoUrl, setAmbientVideoUrl] = useState(settings.ambient_video_url);
@@ -284,6 +310,43 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
     }
   };
 
+  // Save Design Studio & Basic Store Settings
+  const handleSaveDesignStudio = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingDesign(true);
+    try {
+      const updated = await api.updateSettings({
+        ...settings,
+        theme_palette: themePalette,
+        store_name: storeName,
+        store_subtitle: storeSubtitle,
+        gstin_number: gstinNumber,
+        announcement_text: announcementText,
+        contact_phone: contactPhone,
+        contact_email: contactEmail,
+        whatsapp_number: whatsappNumber,
+        hero_headline: heroHeadline,
+        hero_subtitle: heroSubtitle,
+        trust_badge_1_val: trust1Val,
+        trust_badge_1_label: trust1Label,
+        trust_badge_2_val: trust2Val,
+        trust_badge_2_label: trust2Label,
+        trust_badge_3_val: trust3Val,
+        trust_badge_3_label: trust3Label,
+        rope_badge_1: rope1,
+        rope_badge_2: rope2,
+        rope_badge_3: rope3,
+      });
+      onUpdateSettings(updated);
+      setDesignSaveSuccess(true);
+      setTimeout(() => setDesignSaveSuccess(false), 2500);
+    } catch (err: any) {
+      alert(`Error saving design settings: ${err.message}`);
+    } finally {
+      setIsSavingDesign(false);
+    }
+  };
+
   // Filter products in catalog view
   const filteredCatalog = products.filter((p) => {
     const matchCat = catalogCategory === 'all' || p.category === catalogCategory;
@@ -390,6 +453,18 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
           >
             <Plus size={15} />
             <span>Add New Product</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('design_studio')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+              activeTab === 'design_studio'
+                ? 'bg-[#1B3B2B] text-white shadow-sm'
+                : 'text-[#4A4740] hover:bg-[#F4EFE6]'
+            }`}
+          >
+            <Palette size={15} />
+            <span>🎨 Design & Store Studio</span>
           </button>
 
           <button
@@ -1004,7 +1079,402 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({
         )}
 
         {/* ========================================================= */}
-        {/* TAB 3: ARTISAN VIDEO & MEDIA STUDIO */}
+        {/* TAB 3: STOREFRONT DESIGN & BASIC SETTINGS STUDIO */}
+        {/* ========================================================= */}
+        {activeTab === 'design_studio' && (
+          <div className="bg-white rounded-3xl border border-[#E7DFD1] p-5 sm:p-8 shadow-sm max-w-4xl mx-auto space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E7DFD1] pb-4">
+              <div>
+                <h2 className="font-serif font-bold text-xl text-[#1B3B2B] flex items-center gap-2">
+                  <Palette className="text-[#D8A856]" size={22} />
+                  <span>Storefront Design & Brand Studio</span>
+                </h2>
+                <p className="text-xs text-[#7A756C] mt-0.5">
+                  Customize theme colors, store identity, hero typography, and hanging rope badges in real-time.
+                </p>
+              </div>
+
+              {designSaveSuccess && (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-green-800 bg-green-50 border border-green-200 px-3.5 py-1.5 rounded-full animate-bounce">
+                  <Check size={14} />
+                  Settings Saved Live!
+                </span>
+              )}
+            </div>
+
+            <form onSubmit={handleSaveDesignStudio} className="space-y-8">
+              
+              {/* 1. Theme Color Palette */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-3">
+                  1. Visual Color Theme Palette
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {[
+                    {
+                      id: 'emerald',
+                      name: '🌿 Emerald Earth',
+                      desc: 'Deep Bengal Loom Forest & Gold',
+                      primary: '#1B3B2B',
+                      accent: '#D8A856',
+                    },
+                    {
+                      id: 'gold',
+                      name: '🍯 Royal Gold',
+                      desc: 'Warm Ochre & Honey Brass',
+                      primary: '#855716',
+                      accent: '#D99B26',
+                    },
+                    {
+                      id: 'terracotta',
+                      name: '🏺 Terracotta Clay',
+                      desc: 'Warm Bengal Earth & Clay',
+                      primary: '#8D3F2D',
+                      accent: '#D47A4A',
+                    },
+                    {
+                      id: 'midnight',
+                      name: '🌑 Midnight Atelier',
+                      desc: 'Slate Charcoal & Brushed Gold',
+                      primary: '#1E242B',
+                      accent: '#C2A368',
+                    },
+                  ].map((palette) => (
+                    <button
+                      key={palette.id}
+                      type="button"
+                      onClick={() => setThemePalette(palette.id as ThemePalette)}
+                      className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
+                        themePalette === palette.id
+                          ? 'border-2 border-[#1B3B2B] bg-[#FAF7F2] shadow-md ring-2 ring-[#D8A856]/40'
+                          : 'border-[#E7DFD1] hover:border-[#D8A856] bg-white'
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/10"
+                            style={{ backgroundColor: palette.primary }}
+                          />
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/10"
+                            style={{ backgroundColor: palette.accent }}
+                          />
+                        </div>
+                        <h4 className="font-serif font-bold text-xs text-[#1B3B2B]">
+                          {palette.name}
+                        </h4>
+                        <p className="text-[10px] text-[#7A756C] mt-0.5 leading-tight">
+                          {palette.desc}
+                        </p>
+                      </div>
+                      {themePalette === palette.id && (
+                        <span className="mt-2 text-[9px] font-bold text-[#1B3B2B] bg-[#EAE2D5] px-2 py-0.5 rounded w-max">
+                          Active Theme
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Real-time Live Preview Card */}
+              <div className="bg-[#FAF7F2] p-4 sm:p-5 rounded-2xl border border-[#D8A856]/40 shadow-xs space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-[#E7DFD1]">
+                  <span className="text-[11px] font-bold text-[#8B6B38] uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles size={13} className="text-[#D8A856]" />
+                    <span>Live Storefront Header Preview (Instant)</span>
+                  </span>
+                  <span className="text-[10px] text-[#7A756C]">Updates as you type</span>
+                </div>
+
+                <div className="bg-white rounded-xl p-3 border border-[#E7DFD1] space-y-2 text-xs">
+                  {/* Announcement Preview */}
+                  <div className="bg-[#1B3B2B] text-white px-2.5 py-1 rounded-lg text-[10px] truncate">
+                    {announcementText}
+                  </div>
+                  
+                  {/* Brand & Ropes Preview */}
+                  <div className="flex items-center justify-between pt-1">
+                    <div>
+                      <strong className="text-[#1B3B2B] font-serif text-sm block">
+                        {storeName}
+                      </strong>
+                      <span className="text-[9px] text-[#7A756C] uppercase font-bold tracking-wider">
+                        {storeSubtitle}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <span className="bg-[#1B3B2B] text-[#EAD7B5] text-[9px] px-2 py-0.5 rounded-full font-bold">
+                        {rope1}
+                      </span>
+                      <span className="bg-[#D8A856] text-[#1B3B2B] text-[9px] px-2 py-0.5 rounded-full font-bold">
+                        {rope2}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Headline Preview */}
+                  <div className="pt-1 border-t border-[#E7DFD1]/60">
+                    <p className="font-serif font-bold text-xs text-[#1B3B2B] line-clamp-1">
+                      {heroHeadline}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2. Basic Store Identity & Contacts */}
+              <div className="space-y-4">
+                <h3 className="font-serif font-bold text-sm text-[#1B3B2B] border-b border-[#E7DFD1] pb-2">
+                  2. Store Identity & Customer Support
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Store Brand Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={storeName}
+                      onChange={(e) => setStoreName(e.target.value)}
+                      placeholder="Dindayal & Craft"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Store Subtitle / Tagline *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={storeSubtitle}
+                      onChange={(e) => setStoreSubtitle(e.target.value)}
+                      placeholder="Indian Jute House • Estd. Kolkata"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                    Top Announcement Bar Ticker *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={announcementText}
+                    onChange={(e) => setAnnouncementText(e.target.value)}
+                    placeholder="Direct from Bengal Looms & Mills • 100% Eco-Braided Jute Mats & Rugs"
+                    className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Support Phone Number *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={contactPhone}
+                      onChange={(e) => setContactPhone(e.target.value)}
+                      placeholder="+91 98302 96606"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Support Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      placeholder="info@indianjutehouse.com"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Business GSTIN Number *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={gstinNumber}
+                      onChange={(e) => setGstinNumber(e.target.value)}
+                      placeholder="19AACFD2094B1ZS"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. Hero Messaging & Trust Metrics */}
+              <div className="space-y-4">
+                <h3 className="font-serif font-bold text-sm text-[#1B3B2B] border-b border-[#E7DFD1] pb-2">
+                  3. Hero Typography & Trust Badges
+                </h3>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                    Main Hero Headline *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={heroHeadline}
+                    onChange={(e) => setHeroHeadline(e.target.value)}
+                    placeholder="Handcrafted Jute Mats & Eco Living, Woven with Soul."
+                    className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                    Hero Subtitle Narrative *
+                  </label>
+                  <textarea
+                    rows={2}
+                    required
+                    value={heroSubtitle}
+                    onChange={(e) => setHeroSubtitle(e.target.value)}
+                    placeholder="From the fertile delta of Bengal to modern sustainable homes..."
+                    className="w-full px-3.5 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1] focus:outline-none focus:border-[#D8A856]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="bg-[#FAF7F2] p-3 rounded-xl border border-[#E7DFD1] space-y-1">
+                    <span className="text-[10px] font-bold text-[#8B6B38] uppercase">Trust Badge 1</span>
+                    <input
+                      type="text"
+                      value={trust1Val}
+                      onChange={(e) => setTrust1Val(e.target.value)}
+                      placeholder="100%"
+                      className="w-full px-2 py-1 text-xs font-bold rounded-lg bg-white border border-[#E7DFD1]"
+                    />
+                    <input
+                      type="text"
+                      value={trust1Label}
+                      onChange={(e) => setTrust1Label(e.target.value)}
+                      placeholder="Golden Bengal Fiber"
+                      className="w-full px-2 py-1 text-[11px] rounded-lg bg-white border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div className="bg-[#FAF7F2] p-3 rounded-xl border border-[#E7DFD1] space-y-1">
+                    <span className="text-[10px] font-bold text-[#8B6B38] uppercase">Trust Badge 2</span>
+                    <input
+                      type="text"
+                      value={trust2Val}
+                      onChange={(e) => setTrust2Val(e.target.value)}
+                      placeholder="10+ Yrs"
+                      className="w-full px-2 py-1 text-xs font-bold rounded-lg bg-white border border-[#E7DFD1]"
+                    />
+                    <input
+                      type="text"
+                      value={trust2Label}
+                      onChange={(e) => setTrust2Label(e.target.value)}
+                      placeholder="Artisan Loom Heritage"
+                      className="w-full px-2 py-1 text-[11px] rounded-lg bg-white border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div className="bg-[#FAF7F2] p-3 rounded-xl border border-[#E7DFD1] space-y-1">
+                    <span className="text-[10px] font-bold text-[#8B6B38] uppercase">Trust Badge 3</span>
+                    <input
+                      type="text"
+                      value={trust3Val}
+                      onChange={(e) => setTrust3Val(e.target.value)}
+                      placeholder="Zero"
+                      className="w-full px-2 py-1 text-xs font-bold rounded-lg bg-white border border-[#E7DFD1]"
+                    />
+                    <input
+                      type="text"
+                      value={trust3Label}
+                      onChange={(e) => setTrust3Label(e.target.value)}
+                      placeholder="Microplastic Residue"
+                      className="w-full px-2 py-1 text-[11px] rounded-lg bg-white border border-[#E7DFD1]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 4. Hanging Ropes Badges */}
+              <div className="space-y-4">
+                <h3 className="font-serif font-bold text-sm text-[#1B3B2B] border-b border-[#E7DFD1] pb-2">
+                  4. Top Hanging Ropes & Badges (Mobile + PC)
+                </h3>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Left Rope Badge
+                    </label>
+                    <input
+                      type="text"
+                      value={rope1}
+                      onChange={(e) => setRope1(e.target.value)}
+                      placeholder="🧶 Authentic Bengal Looms"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Middle Rope Badge
+                    </label>
+                    <input
+                      type="text"
+                      value={rope2}
+                      onChange={(e) => setRope2(e.target.value)}
+                      placeholder="✨ 100% Hand-Braided"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-[#8B6B38] mb-1">
+                      Right Rope Badge
+                    </label>
+                    <input
+                      type="text"
+                      value={rope3}
+                      onChange={(e) => setRope3(e.target.value)}
+                      placeholder="🌿 Zero Microplastics"
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF7F2] border border-[#E7DFD1]"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-end pt-4 border-t border-[#E7DFD1]">
+                <button
+                  type="submit"
+                  disabled={isSavingDesign}
+                  className="flex items-center gap-2 bg-[#1B3B2B] hover:bg-[#12271D] text-white px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-md transition-all"
+                >
+                  <Check size={16} />
+                  <span>{isSavingDesign ? 'Saving Settings...' : '💾 Save Design & Store Settings Live'}</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* ========================================================= */}
+        {/* TAB 4: ARTISAN VIDEO & MEDIA STUDIO */}
         {/* ========================================================= */}
         {activeTab === 'video_studio' && (
           <div className="bg-white rounded-3xl border border-[#E7DFD1] p-5 sm:p-8 shadow-sm max-w-4xl mx-auto space-y-6">

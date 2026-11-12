@@ -133,13 +133,28 @@ export const fallbackProducts: Product[] = [
 
 export const fallbackSettings: SiteSettings = {
   id: 'default',
-  ambient_video_url: 'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-weaving-a-basket-43845-large.mp4',
-  documentary_video_url: 'https://www.youtube.com/embed/BHbDLSXmtBA',
-  video_poster_url: '/assets/images/jute_floor_mat.jpg',
+  store_name: 'Dindayal & Craft',
+  store_subtitle: 'Indian Jute House • Estd. Kolkata',
+  gstin_number: '19AACFD2094B1ZS',
   announcement_text: '🌾 Direct from Bengal Looms & Mills • 100% Eco-Braided Jute Mats & Rugs • Bulk Inquiries: +91 98302 96606',
   contact_phone: '+91 98302 96606',
   contact_email: 'info@indianjutehouse.com',
   whatsapp_number: '+919830296606',
+  hero_headline: 'Handcrafted Jute Mats & Eco Living, Woven with Soul.',
+  hero_subtitle: 'From the fertile delta of Bengal to modern sustainable homes. Hand-braided circular floor rugs, ribbed anti-slip entry mats, and artisan dining runners engineered for longevity and barefoot comfort.',
+  trust_badge_1_val: '100%',
+  trust_badge_1_label: 'Golden Bengal Fiber',
+  trust_badge_2_val: '10+ Yrs',
+  trust_badge_2_label: 'Artisan Loom Heritage',
+  trust_badge_3_val: 'Zero',
+  trust_badge_3_label: 'Microplastic Residue',
+  rope_badge_1: '🧶 Authentic Bengal Looms',
+  rope_badge_2: '✨ 100% Hand-Braided',
+  rope_badge_3: '🌿 Zero Microplastics',
+  theme_palette: 'emerald',
+  ambient_video_url: 'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-woman-weaving-a-basket-43845-large.mp4',
+  documentary_video_url: 'https://www.youtube.com/embed/BHbDLSXmtBA',
+  video_poster_url: '/assets/images/jute_floor_mat.jpg',
 };
 
 export const api = {

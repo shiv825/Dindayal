@@ -1,6 +1,6 @@
 import React from 'react';
-import { ShoppingBag, Settings, Phone, ShieldCheck } from 'lucide-react';
-import { ProductCategory } from '../types';
+import { ShoppingBag, Settings, Phone, ShieldCheck, Sparkles } from 'lucide-react';
+import { ProductCategory, SiteSettings } from '../types';
 
 interface NavbarProps {
   cartCount: number;
@@ -8,6 +8,8 @@ interface NavbarProps {
   onOpenAdmin: () => void;
   selectedCategory: ProductCategory;
   onSelectCategory: (cat: ProductCategory) => void;
+  settings?: SiteSettings;
+  onOpenVibeMatcher?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -16,7 +18,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAdmin,
   selectedCategory,
   onSelectCategory,
+  settings,
+  onOpenVibeMatcher,
 }) => {
+  const storeName = settings?.store_name || 'Dindayal & Craft';
+  const storeSubtitle = settings?.store_subtitle || 'Indian Jute House • Estd. Kolkata';
+  const announcement = settings?.announcement_text || 'Direct from Bengal Looms & Mills • 100% Eco-Braided Jute Mats & Rugs';
+  const phone = settings?.contact_phone || '+91 98302 96606';
+  const gstin = settings?.gstin_number || '19AACFD2094B1ZS';
+
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E7DFD1] transition-all">
       {/* Top Announcement Bar */}
@@ -25,21 +35,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-1.5 justify-center sm:justify-start">
             <span className="inline-block w-2 h-2 rounded-full bg-[#D8A856] animate-pulse flex-shrink-0"></span>
             <span className="font-medium tracking-wide">
-              Direct from Bengal Looms & Mills • 100% Eco-Braided Jute Mats & Rugs
+              {announcement}
             </span>
           </div>
           <div className="flex items-center gap-3 text-[#EAD7B5] justify-center text-[10px] sm:text-xs">
             <a
-              href="tel:+919830296606"
+              href={`tel:${phone.replace(/\s+/g, '')}`}
               className="flex items-center gap-1 hover:text-white transition-colors"
             >
               <Phone size={11} />
-              <span>+91 98302 96606</span>
+              <span>{phone}</span>
             </a>
             <span className="hidden sm:inline-block opacity-40">|</span>
             <span className="hidden sm:flex items-center gap-1">
               <ShieldCheck size={11} />
-              <span>GSTIN: 19AACFD2094B1ZS</span>
+              <span>GSTIN: {gstin}</span>
             </span>
           </div>
         </div>
@@ -54,10 +64,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div className="min-w-0">
             <a href="#" className="font-serif text-lg sm:text-2xl font-bold tracking-tight text-[#1B3B2B] truncate block">
-              Dindayal <span className="text-[#D8A856] font-normal">& Craft</span>
+              {storeName}
             </a>
             <p className="text-[9px] sm:text-[10px] tracking-wider uppercase font-semibold text-[#8B6B38] truncate">
-              Indian Jute House • Estd. Kolkata
+              {storeSubtitle}
             </p>
           </div>
         </div>
@@ -88,6 +98,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {/* AI Room Matcher Trigger */}
+          {onOpenVibeMatcher && (
+            <button
+              onClick={onOpenVibeMatcher}
+              className="hidden lg:flex items-center gap-1.5 text-xs font-semibold px-3 py-2 rounded-xl bg-[#FAF7F2] border border-[#D8A856] text-[#8B6B38] hover:bg-[#D8A856] hover:text-[#1B3B2B] transition-all shadow-xs"
+              title="10-Second Room & Vibe Finder"
+            >
+              <Sparkles size={13} className="text-[#D8A856]" />
+              <span>AI Rug Finder</span>
+            </button>
+          )}
+
           {/* Admin Switcher */}
           <button
             onClick={onOpenAdmin}

@@ -32,15 +32,32 @@ export interface CartItem {
   quantity: number;
 }
 
+export type ThemePalette = 'emerald' | 'gold' | 'terracotta' | 'midnight';
+
 export interface SiteSettings {
   id: string;
-  ambient_video_url: string;
-  documentary_video_url: string;
-  video_poster_url: string;
+  store_name?: string;
+  store_subtitle?: string;
+  gstin_number?: string;
   announcement_text: string;
   contact_phone: string;
   contact_email: string;
   whatsapp_number: string;
+  hero_headline?: string;
+  hero_subtitle?: string;
+  trust_badge_1_val?: string;
+  trust_badge_1_label?: string;
+  trust_badge_2_val?: string;
+  trust_badge_2_label?: string;
+  trust_badge_3_val?: string;
+  trust_badge_3_label?: string;
+  rope_badge_1?: string;
+  rope_badge_2?: string;
+  rope_badge_3?: string;
+  theme_palette?: ThemePalette;
+  ambient_video_url: string;
+  documentary_video_url: string;
+  video_poster_url: string;
 }
 
 export interface WholesaleInquiry {
