@@ -33,58 +33,6 @@
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
-/* Theme Palette Overrides */
-[data-theme='gold'] {
-  --theme-primary: #855716;
-  --theme-primary-hover: #6a440f;
-  --theme-accent: #d99b26;
-  --theme-bg-soft: #fdf8ee;
-}
-
-[data-theme='terracotta'] {
-  --theme-primary: #8d3f2d;
-  --theme-primary-hover: #6e2d1f;
-  --theme-accent: #d47a4a;
-  --theme-bg-soft: #fbf5f1;
-}
-
-[data-theme='midnight'] {
-  --theme-primary: #1e242b;
-  --theme-primary-hover: #14181d;
-  --theme-accent: #c2a368;
-  --theme-bg-soft: #f5f6f8;
-}
-
-/* Futuristic Micro-Inspector & Floor Texture Gradients */
-.floor-teak {
-  background: radial-gradient(circle at 50% 50%, rgba(184, 115, 51, 0.15) 0%, transparent 80%),
-              repeating-linear-gradient(90deg, #3d2314 0px, #4a2c19 30px, #3d2314 60px);
-}
-.floor-marble {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(230, 233, 236, 0.9) 100%),
-              linear-gradient(135deg, rgba(200, 205, 210, 0.3) 25%, transparent 25%);
-}
-.floor-slate {
-  background: radial-gradient(circle at 60% 60%, rgba(90, 100, 110, 0.2) 0%, transparent 70%),
-              linear-gradient(45deg, #2f3542 0%, #1e272e 100%);
-}
-.floor-terracotta {
-  background: radial-gradient(circle at 50% 50%, rgba(211, 84, 0, 0.18) 0%, transparent 80%),
-              repeating-linear-gradient(45deg, #a04020 0px, #b24d27 40px, #8d3314 80px);
-}
-
-/* Room Lighting Atmosphere Filters */
-.lighting-golden-hour {
-  filter: contrast(1.05) saturate(1.25) sepia(0.2);
-}
-.lighting-daylight {
-  filter: contrast(1.02) saturate(1.05) brightness(1.03);
-}
-.lighting-evening {
-  filter: contrast(1.1) saturate(1.15) brightness(0.92) sepia(0.25);
-}
-
-
 .card-hover-calm:hover {
   transform: translateY(-5px);
   box-shadow: 0 16px 32px -8px rgba(27, 59, 43, 0.12), 0 6px 14px -4px rgba(216, 168, 86, 0.1);

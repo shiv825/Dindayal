@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, CheckCircle2, Sparkles } from 'lucide-react';
+import { X, Trash2, Plus, Minus, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { CartItem } from '../types';
 
 interface CartDrawerProps {
@@ -189,22 +189,6 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               </form>
             ) : items.length > 0 ? (
               <div className="space-y-3">
-                {/* Futuristic Live Eco-Impact Meter */}
-                <div className="bg-gradient-to-r from-[#1B3B2B] to-[#244A37] text-white p-3.5 rounded-2xl shadow-xs border border-[#D8A856]/40 text-xs space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold flex items-center gap-1.5 text-[#D8A856]">
-                      <Sparkles size={13} />
-                      <span>Live Eco Impact</span>
-                    </span>
-                    <span className="text-[10px] bg-white/20 text-[#EAD7B5] px-2 py-0.5 rounded-full font-bold">
-                      Zero Microplastics
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-[#EAD7B5] leading-relaxed">
-                    By choosing Bengal jute, your order avoids <strong className="text-white">{(items.reduce((s, i) => s + i.quantity, 0) * 2.2).toFixed(1)} kg</strong> of synthetic microplastics & empowers <strong className="text-white">{items.reduce((s, i) => s + i.quantity, 0)}</strong> artisan workdays.
-                  </p>
-                </div>
-
                 {items.map((item) => (
                   <div
                     key={item.product.id}

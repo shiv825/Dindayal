@@ -7,8 +7,6 @@ import { WholesaleCalculator } from './components/WholesaleCalculator';
 import { VideoDocModal } from './components/VideoDocModal';
 import { CartDrawer } from './components/CartDrawer';
 import { AdminPortal } from './components/AdminPortal';
-import { FiberInspectorModal } from './components/FiberInspectorModal';
-import { RoomVibeMatcherModal } from './components/RoomVibeMatcherModal';
 import { Footer } from './components/Footer';
 import { Product, ProductCategory, CartItem, SiteSettings } from './types';
 import { api, fallbackProducts, fallbackSettings } from './lib/api';
@@ -22,8 +20,6 @@ export const App: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
-  const [isFiberInspectorOpen, setIsFiberInspectorOpen] = useState(false);
-  const [isVibeMatcherOpen, setIsVibeMatcherOpen] = useState(false);
 
   // Load initial data from API / Supabase
   const loadData = async () => {
@@ -90,17 +86,12 @@ export const App: React.FC = () => {
   const cartTotalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div
-      data-theme={settings.theme_palette || 'emerald'}
-      className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#FAF7F2] text-[#24221E]"
-    >
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#FAF7F2] text-[#24221E]">
       {/* Navigation Header */}
       <Navbar
-        settings={settings}
         cartCount={cartTotalCount}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAdmin={() => setIsAdminOpen(true)}
-        onOpenVibeMatcher={() => setIsVibeMatcherOpen(true)}
         selectedCategory={selectedCategory}
         onSelectCategory={(cat) => {
           setSelectedCategory(cat);
@@ -119,16 +110,13 @@ export const App: React.FC = () => {
         onOpenVideo={() => setIsVideoModalOpen(true)}
       />
 
-      {/* Hero Stage with Bengal Looms Story & Futuristic Room/Floor Studio */}
+      {/* Hero Stage with Bengal Looms Story & Room Visualizer */}
       <HeroStage
-        settings={settings}
         onOpenVideo={() => setIsVideoModalOpen(true)}
         onExploreProducts={() => {
           const el = document.getElementById('products-catalog');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
-        onOpenFiberInspector={() => setIsFiberInspectorOpen(true)}
-        onOpenVibeMatcher={() => setIsVibeMatcherOpen(true)}
       />
 
       {/* Main Artisan Product Catalog */}
@@ -172,28 +160,9 @@ export const App: React.FC = () => {
         onRefreshProducts={loadData}
       />
 
-      {/* Futuristic Fiber-to-Craft Macro Inspector Modal */}
-      <FiberInspectorModal
-        isOpen={isFiberInspectorOpen}
-        onClose={() => setIsFiberInspectorOpen(false)}
-      />
-
-      {/* Futuristic 10-Second Smart AI Room & Vibe Matcher Modal */}
-      <RoomVibeMatcherModal
-        isOpen={isVibeMatcherOpen}
-        onClose={() => setIsVibeMatcherOpen(false)}
-        products={products}
-        onAddToCart={handleAddToCart}
-        onExploreProduct={(p) => {
-          setIsVibeMatcherOpen(false);
-          const el = document.getElementById('products-catalog');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-      />
-
       {/* Floating WhatsApp Action Pill */}
       <a
-        href={`https://wa.me/${(settings.whatsapp_number || '919830296606').replace(/\+/g, '')}?text=Hello%20Dindayal%20Jute%20%26%20Craft,%20I%20have%20an%20inquiry%20regarding%20handcrafted%20jute%20mats.`}
+        href="https://wa.me/919830296606?text=Hello%20Dindayal%20Jute%20%26%20Craft,%20I%20have%20an%20inquiry%20regarding%20handcrafted%20jute%20mats."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white p-3.5 rounded-full shadow-2xl hover:scale-110 transition-transform flex items-center justify-center border-2 border-white"
